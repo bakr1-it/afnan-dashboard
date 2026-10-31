@@ -34,16 +34,21 @@
 @layer components {
     /**todo style for content layout in file app  */
     .contianer-layout{
-        @apply flex min-h-screen w-full gap-2
+        @apply flex h-screen overflow-hidden w-full gap-2
     }
     /**todo style for side bar */
-  
+      .overlay-sidebar {
+        @apply fixed inset-0 z-40 bg-black/20 md:hidden;
+    }
         aside{
-           @apply hidden md:flex flex-col gap-2 md:w-14 lg:w-72 bg-canvas-card p-2;
-            a{
-                 @apply flex gap-2  items-center transition-colors duration-300 p-2 rounded-md;
+    @apply 
+    fixed inset-0 z-50 w-4/5 h-full md:static md:h-auto flex
+     flex-col gap-2 md:w-14 lg:w-72 bg-canvas-card p-2;
+                 a{
+                    @apply flex gap-2  items-center transition-colors duration-300 p-2 rounded-md;
+              
             span{
-                @apply hidden lg:inline-block
+                @apply  inline-block md:hidden lg:inline-block
 
             }
                 }
@@ -54,6 +59,30 @@
             a:hover{
                 @apply bg-secondary/80 text-white 
             }
-
+            .logo{
+                @apply flex items-center justify-between py-1; 
+            img{
+                @apply w-10 ;
+            }
+            h1{
+                @apply text-xl font-semibold text-neutral-muted inline-block md:hidden lg:inline-block
+            }
+        }
+        }
+        .content{
+            @apply flex-1 flex flex-col pb-2 px-2 gap-4 overflow-y-auto;
+        }
+        /**!  end style for side bar    */
+    
+    /*todo style for header */
+    .header-app{
+        @apply flex justify-between w-full  border-b-1 border-border-default py-3  px-2 items-center sticky top-0 z-30 bg-canvas-bg backdrop-blur-2xl;
+        
+        .sidebar-icon{
+            @apply text-xl cursor-pointer hover:bg-canvas-bg/80 p-2 rounded-md transition-colors duration-300 
         }
     }
+    .outlet{
+        @apply bg-amber-500 min-h-screen 
+    }
+        }

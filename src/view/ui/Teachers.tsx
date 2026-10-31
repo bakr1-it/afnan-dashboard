@@ -2,7 +2,8 @@
 export default function Teachers() {
   return (
     <div>
-      teacher
+  {Array.from(100).map(()=>(    <p>dsfjk</p>))}
+  
     </div>
   )
 }
