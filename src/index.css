@@ -8,6 +8,9 @@
   --color-secondary-surface: #ECFDF5;
   --color-secondary-text: #065F46;
 
+  --color-review-btn: #005953;
+  --color-review-icon: #26E4B9;
+
   --color-tertiary: #0284C7;
   --color-tertiary-surface: #F0F9FF;
 
@@ -30,7 +33,12 @@
     body{
         @apply bg-canvas-bg
     }
+    .btn{
+        @apply bg-review-btn p-2 rounded-md text-white cursor-pointer hover:bg-secondary
+
+    }
 }
+
 @layer components {
     /**todo style for content layout in file app  */
     .contianer-layout{
@@ -82,7 +90,27 @@
             @apply text-xl cursor-pointer hover:bg-canvas-bg/80 p-2 rounded-md transition-colors duration-300 
         }
     }
+    /**todo style for outlet */
     .outlet{
-        @apply bg-amber-500 min-h-screen 
+        @apply  min-h-screen 
     }
+    /**todo style for user */ 
+    .container-user-info{
+        @apply p-2
+    }
+    .user-info-item{
+        @apply bg-canvas-bg/70 border border-border-default/70 p-2.5 rounded-md;
+        p:first-child{
+            @apply capitalize text-xs text-neutral-muted mb-1;
+        }
+        p:last-child{
+            @apply text-sm font-medium text-neutral-header;
+        }
+    }
+        .filter-data-user{
+            @apply flex justify-between items-center px-2
+
+        }
+    
+
         }
