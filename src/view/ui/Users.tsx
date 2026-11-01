@@ -165,6 +165,9 @@ export const rows: TypeUser[] = [
 export default function User() {
   return (
     <>
+         <div className="title-ui">
+  <h1>All Student</h1>
+ </div>
           <div className="filter-data">
             <div className="list">
         <ListSelect />

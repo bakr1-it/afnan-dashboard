@@ -5,6 +5,8 @@ import React, { useEffect, useState } from 'react';
 import { Country, City }  from 'country-state-city';
 import ListSelect from "../components/ListSelect";
 import AutoCompliate from "../components/AutoCompliate";
+import MailFmail from "../components/MailFmail";
+import RadioButton from "../components/RadioButton";
 export default function NewStudent() {
    const [phone, setPhone] = useState('');
    const [country ,setCountry]= useState('');
@@ -28,7 +30,10 @@ const handelChangeCity = (ev:React.SyntheticEvent, value :string | null)=>{
 
 
    return (
-    
+      <>
+         <div className="title-ui">
+  <h1>Create New Student</h1>
+ </div>
         <form action="" method="post" className="form form-create-new-user">
             <div className="form-group">
                <Input label="name"/>
@@ -65,11 +70,18 @@ const handelChangeCity = (ev:React.SyntheticEvent, value :string | null)=>{
             </div>
             <div className="form-group">
                     <Input  typeInput="date" />
+            </div>
+            <div className="form-group">
+                 <MailFmail />
+            </div>
+            <div className="form-group">
+                 <RadioButton label="Is New Muslim" value="is_new_muslim" />
+            </div>
             
 
-            </div>
 
         </form>
+      </>
       
     
   )

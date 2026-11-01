@@ -1,5 +1,7 @@
 import { HiUsers } from "react-icons/hi";
 import { NavLink } from "react-router-dom";
+
+import { FaLanguage } from "react-icons/fa6";
 import { GiTeacher } from "react-icons/gi";
 import { motion, AnimatePresence } from "motion/react";
 import logo from "../../assets/images/logo.svg";
@@ -10,8 +12,9 @@ interface SideBarProps {
 }
 
 const links = [
-  { to: "/student", id: 1, icon: <HiUsers />, text: "Student" },
-  { to: "/teachers", id: 2, icon: <GiTeacher />, text: "Teacher" },
+  { to: "/language", id: 1, icon: <FaLanguage />, text: "language" },
+  { to: "/student", id: 2, icon: <HiUsers />, text: "Student" },
+  { to: "/teachers", id: 3, icon: <GiTeacher />, text: "Teacher" },
 ];
 
 export default function SideBar({ isOpen, onClose }: SideBarProps) {

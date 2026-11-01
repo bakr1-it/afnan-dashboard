@@ -125,7 +125,9 @@
             }
         }
       
-        
+        .title-ui{
+            @apply text-2xl font-semibold p-2 text-neutral-body border-border-default border-1 inline-block m-2
+        }
     
 
         }

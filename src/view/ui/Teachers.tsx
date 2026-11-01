@@ -30,6 +30,9 @@ const rows :Array<TypeTeacher> =[
 export default function Teachers() {
 return (
   <>
+       <div className="title-ui">
+  <h1>All Teacher</h1>
+ </div>
               <div className="filter-data">
                  <div className="list">
              <ListSelect />
