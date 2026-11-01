@@ -6,6 +6,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import ListSelect from '../components/ListSelect';
+import { Link } from 'react-router-dom';
 
 interface TypeTeacher{
   name:string,
@@ -29,9 +30,16 @@ const rows :Array<TypeTeacher> =[
 export default function Teachers() {
 return (
   <>
-        <div className="filter-data">
-          <ListSelect />
-        </div>
+              <div className="filter-data">
+                 <div className="list">
+             <ListSelect />
+     
+                 </div>
+                 <div className="new-student">
+                <Link to="/newTeacher" className="btn">New Teacher</Link>  
+     
+                 </div>
+                 </div>
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>

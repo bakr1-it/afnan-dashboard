@@ -107,10 +107,25 @@
             @apply text-sm font-medium text-neutral-header;
         }
     }
-        .filter-data-user{
+        .filter-data{
             @apply flex justify-between items-center px-2
 
         }
+        /**todo style for form student*/
+              .form{
+            @apply bg-canvas-card border border-border-default rounded-xl shadow-2xs grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-6;
+            .form-group{
+                @apply w-full;
+            }
+            .input-phone{
+                @apply w-full ;
+                input{
+                    @apply w-full;
+                }
+            }
+        }
+      
+        
     
 
         }

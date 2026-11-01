@@ -4,14 +4,19 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { type SelectChangeEvent } from '@mui/material/Select';
 import Button from '@mui/material/Button';
-
-export default function ListSelect() {
-  const [association, setAssociation] = React.useState<string | number>('');
+interface TypeListSelect{
+  data?:Array<string>;
+  label?:string,
+  dataObj?:Record<string,string>,
+  dis?:boolean,
+  selectData?:string,
+  setSelectData?:(ev:React.ChangeEvent<HTMLSelectElement>)=>void,
+}
+export default function ListSelect({data,label,dataObj,dis,selectData='',setSelectData}:TypeListSelect) {
+ 
   const [open, setOpen] = React.useState(false);
 
-  const handleChange = (event: SelectChangeEvent<typeof association>) => {
-    setAssociation(event.target.value);
-  };
+
 
   const handleClose = () => {
     setOpen(false);
@@ -22,27 +27,31 @@ export default function ListSelect() {
   };
 
   return (
-    <div>
-      <FormControl sx={{ m: 1, minWidth: 170 }}>
-        <InputLabel id="demo-controlled-open-select-label">Academic</InputLabel>
+  
+      <FormControl fullWidth size="small">
+        <InputLabel id="demo-controlled-open-select-label">{label}</InputLabel>
         <Select
+        disabled={dis}
           labelId="demo-controlled-open-select-label"
           id="demo-controlled-open-select"
           open={open}
           onClose={handleClose}
           onOpen={handleOpen}
-          value={association}
+          value={selectData}
           label="Academic"
-          onChange={handleChange}
+          onChange={setSelectData}
         >
           <MenuItem value="">
             <em>None</em>
           </MenuItem>
-          <MenuItem value={10}>Ten</MenuItem>
-          <MenuItem value={20}>Twenty</MenuItem>
-          <MenuItem value={30}>Thirty</MenuItem>
+          
+          {data && data.map((d)=><MenuItem value={d}>{d}</MenuItem>)}
+      
+          {dataObj && Object.entries(dataObj).map((c)=><MenuItem value={c[0]}>{c[1]}</MenuItem>)}
+
+    
         </Select>
       </FormControl>
-    </div>
+
   );
 }

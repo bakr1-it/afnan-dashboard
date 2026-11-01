@@ -10,6 +10,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Grid from '@mui/material/Grid';
+import { Link } from "react-router-dom";
 
 import { MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
 import ListSelect from "../components/ListSelect";
@@ -164,13 +165,13 @@ export const rows: TypeUser[] = [
 export default function User() {
   return (
     <>
-          <div className="filter-data-user">
+          <div className="filter-data">
             <div className="list">
         <ListSelect />
 
             </div>
             <div className="new-student">
-              <button className="btn btn-create-student">New Student</button>
+             <Link to="/newStudent" className="btn">New Student</Link>  
 
             </div>
       </div>
