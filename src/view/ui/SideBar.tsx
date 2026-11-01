@@ -1,5 +1,6 @@
 import { HiUsers } from "react-icons/hi";
 import { NavLink } from "react-router-dom";
+import { FaSchool } from "react-icons/fa";
 
 import { FaLanguage } from "react-icons/fa6";
 import { GiTeacher } from "react-icons/gi";
@@ -12,9 +13,10 @@ interface SideBarProps {
 }
 
 const links = [
-  { to: "/language", id: 1, icon: <FaLanguage />, text: "language" },
-  { to: "/student", id: 2, icon: <HiUsers />, text: "Student" },
-  { to: "/teachers", id: 3, icon: <GiTeacher />, text: "Teacher" },
+  { to: "/academic", id: 1, icon: <FaSchool />, text: "Academic" },
+  { to: "/language", id: 2, icon: <FaLanguage />, text: "language" },
+  { to: "/student", id: 3, icon: <HiUsers />, text: "Student" },
+  { to: "/teachers", id: 4, icon: <GiTeacher />, text: "Teacher" },
 ];
 
 export default function SideBar({ isOpen, onClose }: SideBarProps) {
