@@ -24,14 +24,13 @@ const payload= {
    email:refEmail.current.value,
    password:refPassword.current.value,
 }
-const newError = {name:"",email:"",password:""};
-if(!payload.name) newError.name="Name is Required";
-if(!payload.email) newError.email="email is Required";
-if(!payload.password) newError.password="password is Required";
+const newError :Record<string,any>={};;
+if(!payload.name) newError["name"]="Name is Required";
+if(!payload.email) newError["email"]="email is Required";
+if(!payload.password) newError["password"]="password is Required";
 setErros(newError);
 
-if(Object.keys(newError).length ==0){
-   debugger
+if(Object.keys(newError).length >0){
    return;
 }
 
@@ -40,6 +39,10 @@ setIsLoading(true);
 inserRow({tableName:"academies",payload:payload})
 .then((data)=>{
       setShowAlert({typeAlert:"success",  message: 'Academic '+''+data.data.name + 'created has been success' , isShow:true});  
+      refEmail.current.value="";
+      refName.current.value="";
+      refPassword.current.value="";
+
 }).catch((error)=>{
       setShowAlert({typeAlert:"error",message:error.message , isShow:true});
 }).finally(()=>{
