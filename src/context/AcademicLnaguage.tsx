@@ -16,6 +16,7 @@ interface TypeAcademic{
 interface LanguageAcademicType{
     academies:TypeAcademic[];
     languagues:TypeLnaguage[];
+
 }
 const AcademicLanguageContext= createContext<LanguageAcademicType | undefined >(undefined);
 export function AcademicLanguageData({children}:{children:ReactNode}){

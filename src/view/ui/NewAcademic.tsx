@@ -4,6 +4,7 @@ import { useRef, useState, type SyntheticEvent } from "react";
 import inserRow from "../../services/subepaseServicese";
 import  IconLoad from "../components/IconLoad";
 import AlertSuccess from "../components/AlertSuccess";
+import { vaildatedBeforeSend } from "../../helper";
 
 
 export default function NewAcademic() {
@@ -33,10 +34,8 @@ const payload= {
    email:refEmail.current.value,
    password:refPassword.current.value,
 }
-const newError :Record<string,any>={};;
-if(!payload.name) newError["name"]="Name is Required";
-if(!payload.email) newError["email"]="email is Required";
-if(!payload.password) newError["password"]="password is Required";
+let newError :Record<string,any>={};;
+newError= vaildatedBeforeSend(payload);
 setErros(newError);
 
 if(Object.keys(newError).length >0){

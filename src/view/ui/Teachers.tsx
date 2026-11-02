@@ -7,27 +7,71 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import ListSelect from '../components/ListSelect';
 import { Link } from 'react-router-dom';
+import { getTableTeacher,getTeachersByAcademyId } from '../../services/subepaseServicese';
+import React, { useEffect, useMemo, useState } from 'react';
+import Loading from '../components/Loading';
+import { useAcademicLanguage } from '../../context/AcademicLnaguage'; 
 
-interface TypeTeacher{
-  name:string,
-  email:string,
-  phone:string,
-  country:string,
- academic:string,
+interface Teacher {
+  id: string;
+  name: string;              
+  academy_id: string;
+  academies: {
+    name: string;          
+  };
+  email: string;
+  phone: string;
+  password?: string;
+  is_male: boolean;
+  country: string;
+  language_code: string;
+  fcm: string | null;
+  created_at: string;
 }
-
-const rows :Array<TypeTeacher> =[
-  {name:"any name",email:"dsfkl",phone:"dkslf",country:"kslf",academic:"sdklf"},
-  {name:"any name",email:"dsfkl",phone:"dkslf",country:"kslf",academic:"sdklf"},
-  {name:"any name",email:"dsfkl",phone:"dkslf",country:"kslf",academic:"sdklf"},
-  {name:"any name",email:"dsfkl",phone:"dkslf",country:"kslf",academic:"sdklf"},
-  {name:"any name",email:"dsfkl",phone:"dkslf",country:"kslf",academic:"sdklf"},
-  {name:"any name",email:"dsfkl",phone:"dkslf",country:"kslf",academic:"sdklf"},
-
-  
-];
-
 export default function Teachers() {
+  const [teacher,setTeacher]= useState<Teacher[]>([]);
+  const [loading,setLoading]= useState(false);
+  const [selectAcademic,setSelectAcademic]= useState("");
+
+  const {academies}= useAcademicLanguage();
+
+    const TypeAcademic=  useMemo(()=>{
+  const academicMap:  Record<string,string>={};
+     academicMap["all"]= "All";
+     academies.forEach((academic)=>{
+       academicMap[academic.id]= academic.name;
+     })
+  
+     return academicMap;
+   },[academies]);
+  
+  
+  const filterTeacherForAcademic = useMemo(()=>{
+   
+    if(selectAcademic == "all" || !selectAcademic )
+      return teacher;  
+
+    return teacher.filter(t=> t.academy_id == selectAcademic);
+  },[selectAcademic,teacher]) 
+  
+   useEffect(()=>{
+    setLoading(true);
+    getTableTeacher()
+    .then((data)=>{
+      setTeacher(data);
+    }).catch((error)=>{
+      
+    }).finally(()=>{
+      
+      setLoading(false);
+})
+
+  },[]);
+
+  const handelOnChangeAcademic= (ev:React.ChangeEvent<HTMLSelectElement>)=>{
+    setSelectAcademic(ev.target.value);
+
+  }
 return (
   <>
        <div className="title-ui">
@@ -35,7 +79,8 @@ return (
  </div>
               <div className="filter-data">
                  <div className="list">
-             <ListSelect />
+                  <p>select teacher for academic</p>
+             <ListSelect dataObj={TypeAcademic} selectData={selectAcademic} setSelectData={handelOnChangeAcademic}/>
      
                  </div>
                  <div className="new-student">
@@ -54,20 +99,36 @@ return (
             <TableCell align="left">Academic </TableCell>
           </TableRow>
         </TableHead>
+        {loading 
+        ?
         <TableBody>
-          {rows.map((row) => (
             <TableRow
-              key={row.name}
+              
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              >
+              <TableCell align="left" colSpan={5}><Loading /></TableCell>
+        
+      
+            </TableRow>
+
+        </TableBody>
+        :
+        <TableBody>
+          
+          {filterTeacherForAcademic.map((row) => (
+            <TableRow
+            key={row.id}
+            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
               <TableCell align="left">{row.name}</TableCell>
               <TableCell align="left">{row.email}</TableCell>
               <TableCell align="left">{row.phone}</TableCell>
               <TableCell align="left">{row.country}</TableCell>
-              <TableCell align="left">{row.academic}</TableCell>
+              <TableCell align="left">{row.academies.name}</TableCell>
             </TableRow>
           ))}
         </TableBody>
+           }
       </Table>
     </TableContainer>
   </>

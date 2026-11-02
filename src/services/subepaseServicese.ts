@@ -20,3 +20,38 @@ export async function getTable(tableName:string){
     if(error) throw error;
     return data;
 }
+export async function getTableTeacher() {
+  const { data, error } = await supabase
+    .from("teachers")
+    .select(`
+      *,
+      academies (
+        name
+      )
+    `);
+
+  if (error) {
+    console.error("Error fetching teachers with academy:", error.message);
+    throw error;
+  }
+
+  return data;
+}
+export async function getTeachersByAcademyId(academyId: string) {
+  const { data, error } = await supabase
+    .from("teachers")
+    .select(`
+      *,
+      academies (
+        name
+      )
+    `)
+    .eq("academy_id", academyId);
+
+  if (error) {
+    console.error(`Error fetching teachers for academy ID "${academyId}":`, error.message);
+    throw error;
+  }
+
+  return data;
+}

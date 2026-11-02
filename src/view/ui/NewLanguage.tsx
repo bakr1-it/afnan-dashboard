@@ -6,6 +6,7 @@ import AlertSuccess from "../components/AlertSuccess";
 import inserRow from "../../services/subepaseServicese";
 import  IconLoad from "../components/IconLoad";
 import Checked from '../components/Checked';
+import { vaildatedBeforeSend } from "../../helper";
 export default function NewLanguage() {
   const refName= useRef<HTMLInputElement>(null) as React.RefObject<HTMLInputElement>;
   const refCode= useRef<HTMLInputElement>(null) as React.RefObject<HTMLInputElement>;
@@ -29,10 +30,8 @@ export default function NewLanguage() {
 
   
 
-  const newError :Record<string,string>={};
-  if(!payload.name) newError["name"]="Name is Required";
-  if(!payload.code) newError["code"]="code is Required";
-
+  let newError :Record<string,string>={};
+newError= vaildatedBeforeSend(payload);
 
   setErros(newError);
   
@@ -44,7 +43,7 @@ export default function NewLanguage() {
   
   inserRow({tableName:"languages",payload:payload})
   .then((data)=>{
-        setShowAlert({typeAlert:"success",  message: 'language '+''+data.data.name + 'created has been success' , isShow:true});  
+        setShowAlert({typeAlert:"success",  message: ' language  '+''+data.data.name + 'created has been success' , isShow:true});  
 refName.current.value="";
 refCode.current.value="";
 

@@ -6,15 +6,18 @@ import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 
 
+interface TypeProps{
 
-export default function MailFmail() {
+  refChecked?:React.RefObject<HTMLInputElement>
+}
+export default function MailFmail({refChecked}:TypeProps) {
   const id = React.useId();
   return (
     <FormControl fullWidth >
       <FormLabel id={`${id}-label`}>Gender</FormLabel>
-      <RadioGroup row aria-labelledby={`${id}-label`} name="row-radio-buttons-group">
+      <RadioGroup defaultValue="male" row aria-labelledby={`${id}-label`} name="row-radio-buttons-group">
         <FormControlLabel value="female" control={<Radio />} label="Female" />
-        <FormControlLabel value="male" control={<Radio />} label="Male" />
+        <FormControlLabel value="male" control={<Radio slotProps={{ input: { ref: refChecked } }} />} label="Male" />
       </RadioGroup>
     </FormControl>
   );
