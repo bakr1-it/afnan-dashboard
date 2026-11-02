@@ -1,20 +1,96 @@
 import Input from "../components/Input";
 import { PhoneInput } from 'react-international-phone';
 import 'react-international-phone/style.css';
-import React, { useEffect, useState } from 'react';
 import {  City }  from 'country-state-city';
 import ListSelect from "../components/ListSelect";
 import AutoCompliate from "../components/AutoCompliate";
 import MailFmail from "../components/MailFmail";
 import RadioButton from "../components/RadioButton";
 import { listCountryWithIso } from "../constants/country";
+import inserRow from "../../services/subepaseServicese";
+import IconLoad from "../components/IconLoad";
+import AlertSuccess from "../components/AlertSuccess";
+import { vaildatedBeforeSend } from "../../helper";
+import { useAcademicLanguage } from "../../context/AcademicLnaguage";
+import React, {  useMemo, useRef, useState, type ChangeEvent } from 'react';
+import Checked from "../components/Checked";
+
 export default function NewStudent() {
+   /**
+    * todo use state for form 
+    */
    const [phone, setPhone] = useState('');
    const [country ,setCountry]= useState('');
+    const [selectAcademic,setSelectAcademic] = useState('');
    const [listCity,setListCity]=useState<string[]>([]);
    const [selectCity,setSelectCity]=useState('');
+    const [selectLang,setSelectLang]= useState('');
+    const [showAlert,setShowAlert]= useState({typeAlert:"",message:"",isShow:false});
+    const [selectTeacher,setSelectTeacher]=useState('');
 
+    /**
+     * ! end use state for form 
+     */
 
+    /**
+     * todo handel when send form
+     */
+    const [isLoading,setIsLoading]= useState(false);
+    const [errors,setErros] = useState(
+    {name:"", email:"" , password:"",country:"",language_code:"",is_mail:null,academy_id:"",phone:"",city:'',teacher_id:''}
+     );
+/**
+ * ! end handel when send form
+ */
+
+     
+/**
+ * todo use ref for form data 
+ */
+        const refName= useRef<HTMLInputElement>(null) as React.RefObject<HTMLInputElement>;
+        const refEmail= useRef<HTMLInputElement>(null) as React.RefObject<HTMLInputElement>;
+        const refPassword= useRef<HTMLInputElement>(null) as React.RefObject<HTMLInputElement>;
+        const refChecked= useRef<HTMLInputElement>(null) as React.RefObject<HTMLInputElement>;
+        const refIsNewMuslim= useRef<HTMLInputElement>(null) as React.RefObject<HTMLInputElement>;
+        const refDate= useRef<HTMLInputElement>(null) as React.RefObject<HTMLInputElement>;
+     /**
+      * ! end use ref for form data 
+      */
+
+/**
+ * todo use context for academic and language and teacher 
+ */
+  const {academies,languagues,teachers} = useAcademicLanguage();
+  const TypeAcademic=  useMemo(()=>{
+const academicMap:  Record<string,string>={};
+   academies.forEach((academic)=>{
+     academicMap[academic.id]= academic.name;
+   })
+   return academicMap;
+ },[academies]);
+
+ const languaguesType= useMemo(()=>{
+   const languageMap:Record<string,string>={};
+     languagues.forEach((lang)=>{
+     languageMap[lang.code]= lang.name;
+   })
+   return languageMap;
+ },[languagues])
+ const teachersType= useMemo(()=>{
+   const teacherMap:Record<string,string>={};
+     teachers.forEach((teacher)=>{
+     teacherMap[teacher.id]= teacher.name;
+   })
+   return teacherMap;
+ },[teachers])
+
+ /**
+ * ! use context for academic and language and teacher 
+ */
+
+ /**
+  * todo all function for change value in input and select
+  */
 const handelChangecountry= (ev:React.ChangeEvent<HTMLSelectElement>)=>{
 setCountry(ev.target.value);
 const iso = ev.target.value;
@@ -24,7 +100,81 @@ const handelChangeCity = (ev:React.SyntheticEvent, value :string | null)=>{
  setSelectCity(value || "")
 }
 
+const handelOnChangeAcademic = (ev:React.ChangeEvent<HTMLSelectElement>)=>{
+setSelectAcademic(ev.target.value);
 
+}
+const handelOnChangeLanguage = (ev:React.ChangeEvent<HTMLSelectElement>)=>{
+setSelectLang(ev.target.value);
+
+}
+const handelOnChangeTeacher = (ev:React.ChangeEvent<HTMLSelectElement>)=>{
+setSelectTeacher(ev.target.value);
+
+}
+/**
+ * ! end all function for change value in input and select 
+ */
+
+     function handelOnSubmit(ev :SyntheticEvent<HTMLFormElement> ){
+     ev.preventDefault();
+  const payload= {
+     name:refName.current.value,
+     email:refEmail.current.value,
+     password:refPassword.current.value,
+     country:country,
+     language_code:selectLang,
+     teacher_id:selectTeacher,
+     is_new_muslim:refIsNewMuslim.current.checked,
+     birth_date:refDate.current.value,
+     city:selectCity,
+     is_male:refChecked.current.checked,
+     phone_number:phone,
+
+  }
+
+
+
+  let newError :Record<string,string>={};
+newError = vaildatedBeforeSend(payload);
+
+  
+
+if(payload.phone_number.length <=7){
+  newError["phone"]="Invalid phone number";
+}
+  setErros(newError);
+  
+  if(Object.keys(newError).length >0){
+     return;
+  }
+  
+  
+  setIsLoading(true);
+  
+
+  inserRow({tableName:"users",payload:payload})
+  .then((data)=>{
+        setShowAlert({typeAlert:"success",  message: ' teacher '+' ' +data.data.name + 'created has been success' , isShow:true});  
+refName.current.value="";
+refEmail.current.value="";
+refPassword.current.value="";
+refDate.current.value="";
+setCountry("");
+setPhone("");
+setSelectLang("");
+setSelectAcademic("");
+setSelectCity("");
+setSelectTeacher("");
+
+  }).catch((error)=>{
+        setShowAlert({typeAlert:"error",message:error.message , isShow:true});
+  }).finally(()=>{
+     setIsLoading(false);
+  })
+  
+  
+    }
 
 
    return (
@@ -32,18 +182,30 @@ const handelChangeCity = (ev:React.SyntheticEvent, value :string | null)=>{
          <div className="title-ui">
   <h1>Create New Student</h1>
  </div>
-        <form action="" method="post" className="form form-create-new-user">
+        <form action="" method="post" className="form form-create-new-user" onSubmit={handelOnSubmit}>
             <div className="form-group">
-               <Input label="name"/>
+               <Input ref={refName} label="name"/>
+                 <p className="error">{errors.name}</p>
             </div>
             <div className="form-group">
-               <Input label="email" typeInput="email"/>
+               <Input ref={refEmail} label="email" typeInput="email"/>
+                 <p className="error">{errors.email}</p>
             </div>
             <div className="form-group">
-               <Input label="Phone Number" />
+               <Input ref={refPassword} label="password" typeInput="password" />
+                 <p className="error">{errors.password}</p>
             </div>
             <div className="form-group">
-               <Input label="password" typeInput="password" />
+              <ListSelect dataObj={TypeAcademic} label="Academic" selectData={selectAcademic} setSelectData={handelOnChangeAcademic}/>
+                <p className="error">{errors.country}</p>
+         </div>
+          <div className="form-group">
+              <ListSelect dataObj={languaguesType} label="languages" selectData={selectLang} setSelectData={handelOnChangeLanguage}/>
+              <p className="error">{errors.language_code}</p>
+            </div>
+                   <div className="form-group">
+              <ListSelect dataObj={teachersType} label="Teacher" selectData={selectTeacher} setSelectData={handelOnChangeTeacher}/>
+              <p className="error">{errors.teacher_id}</p>
             </div>
             <div className="form-group">
                   <PhoneInput
@@ -53,30 +215,38 @@ const handelChangeCity = (ev:React.SyntheticEvent, value :string | null)=>{
         
         onChange={(phone) => setPhone(phone)}
       />
+                    <p className="error">{errors.phone}</p>
+
             </div>
             <div className="form-group">
               <ListSelect dataObj={listCountryWithIso} label="Country" selectData={country} setSelectData={handelChangecountry}/>
+                <p className="error">{errors.country}</p>
+          
             </div>
             <div className="form-group">
               <AutoCompliate disable={country==""} data={listCity} label="City" selectData={selectCity} setSelectData={handelChangeCity}/>
+                <p className="error">{errors.city}</p>
+           
+            </div>
+     
+           
+            <div className="form-group">
+                    <Input ref={refDate}  typeInput="date" />
             </div>
             <div className="form-group">
-              <ListSelect dataObj={listCountryWithIso} label="Teacher" selectData={country} setSelectData={handelChangecountry}/>
+                 <MailFmail refChecked={refChecked} />
             </div>
             <div className="form-group">
-              <ListSelect dataObj={listCountryWithIso} label="languages" selectData={country} setSelectData={handelChangecountry}/>
-            </div>
-            <div className="form-group">
-                    <Input  typeInput="date" />
-            </div>
-            <div className="form-group">
-                 <MailFmail />
-            </div>
-            <div className="form-group">
-                 <RadioButton label="Is New Muslim" value="is_new_muslim" />
+                <Checked ref={refIsNewMuslim} label="Is New Muslim"/>
             </div>
             
 
+                   <div className="button-submit">
+  <button className="btn btn-submite" disabled={isLoading} > {isLoading? <IconLoad />  :"create"}</button>
+  </div>
+            
+        <AlertSuccess type={showAlert.typeAlert} message={showAlert.message} isShow={showAlert.isShow} onClose={()=> setShowAlert((prev)=>({...prev , isShow:false}))}/>
+            
 
         </form>
       </>

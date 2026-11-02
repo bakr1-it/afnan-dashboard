@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
-import { getTable } from "../services/subepaseServicese";
+import { getTable, getTeacherNameId } from "../services/subepaseServicese";
 interface TypeLnaguage{
   name:string,
   code:string,
@@ -13,9 +13,14 @@ interface TypeAcademic{
   created_at:string,
 
 }
+interface Teachers {
+    name:string,
+    id:string,
+}
 interface LanguageAcademicType{
     academies:TypeAcademic[];
     languagues:TypeLnaguage[];
+    teachers:Teachers[],
 
 }
 const AcademicLanguageContext= createContext<LanguageAcademicType | undefined >(undefined);
@@ -23,6 +28,7 @@ export function AcademicLanguageData({children}:{children:ReactNode}){
 
 const [academies,setAcademies]=useState<TypeAcademic[]>([]);
 const [languagues,setLanguagues]=useState<TypeLnaguage[]>([]);
+const [teachers,setTeachers]=useState<Teachers[]>([]);
 
 useEffect(()=>{
     getTable("academies")
@@ -39,11 +45,18 @@ useEffect(()=>{
      console.log("this error in fule academic language context for language");
         console.log(error)
     })
+    getTeacherNameId()
+    .then((data)=>{
+        setTeachers(data);
+    }).catch((error)=>{
+             console.log("this error in fule academic language context for teacher id ");
+        console.log(error)
+    })
 
 },[]);    
 
 return (
-    <AcademicLanguageContext.Provider value={{academies,languagues}}>
+    <AcademicLanguageContext.Provider value={{academies,languagues,teachers}}>
         {children}
 
     </AcademicLanguageContext.Provider>

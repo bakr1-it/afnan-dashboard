@@ -7,7 +7,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import ListSelect from '../components/ListSelect';
 import { Link } from 'react-router-dom';
-import { getTableTeacher,getTeachersByAcademyId } from '../../services/subepaseServicese';
+import { getTableTeacher } from '../../services/subepaseServicese';
 import React, { useEffect, useMemo, useState } from 'react';
 import Loading from '../components/Loading';
 import { useAcademicLanguage } from '../../context/AcademicLnaguage'; 

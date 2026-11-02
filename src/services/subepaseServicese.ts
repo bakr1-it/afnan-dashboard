@@ -37,19 +37,14 @@ export async function getTableTeacher() {
 
   return data;
 }
-export async function getTeachersByAcademyId(academyId: string) {
+
+export async function getTeacherNameId() {
   const { data, error } = await supabase
     .from("teachers")
-    .select(`
-      *,
-      academies (
-        name
-      )
-    `)
-    .eq("academy_id", academyId);
+    .select("id, name");
 
   if (error) {
-    console.error(`Error fetching teachers for academy ID "${academyId}":`, error.message);
+    console.error("Error fetching teachers list:", error.message);
     throw error;
   }
 

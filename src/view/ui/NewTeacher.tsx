@@ -99,10 +99,12 @@ setSelectLang(ev.target.value);
 
   let newError :Record<string,string>={};
 newError = vaildatedBeforeSend(payload);
-debugger;
+
   
 
-
+if(payload.phone.length <=7){
+  newError["phone"]="Invalid phone number";
+}
   setErros(newError);
   
   if(Object.keys(newError).length >0){
