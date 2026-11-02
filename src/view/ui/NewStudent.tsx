@@ -2,20 +2,18 @@ import Input from "../components/Input";
 import { PhoneInput } from 'react-international-phone';
 import 'react-international-phone/style.css';
 import React, { useEffect, useState } from 'react';
-import { Country, City }  from 'country-state-city';
+import {  City }  from 'country-state-city';
 import ListSelect from "../components/ListSelect";
 import AutoCompliate from "../components/AutoCompliate";
 import MailFmail from "../components/MailFmail";
 import RadioButton from "../components/RadioButton";
+import { listCountryWithIso } from "../constants/country";
 export default function NewStudent() {
    const [phone, setPhone] = useState('');
    const [country ,setCountry]= useState('');
    const [listCity,setListCity]=useState<string[]>([]);
    const [selectCity,setSelectCity]=useState('');
-let countryIsoCode : Record<string,string>={};
-Country.getAllCountries().forEach((c)=>{
-   countryIsoCode[c.isoCode]=`${c.flag} ${c.name}`;
-})
+
 
 const handelChangecountry= (ev:React.ChangeEvent<HTMLSelectElement>)=>{
 setCountry(ev.target.value);
@@ -57,16 +55,16 @@ const handelChangeCity = (ev:React.SyntheticEvent, value :string | null)=>{
       />
             </div>
             <div className="form-group">
-              <ListSelect dataObj={countryIsoCode} label="Country" selectData={country} setSelectData={handelChangecountry}/>
+              <ListSelect dataObj={listCountryWithIso} label="Country" selectData={country} setSelectData={handelChangecountry}/>
             </div>
             <div className="form-group">
               <AutoCompliate disable={country==""} data={listCity} label="City" selectData={selectCity} setSelectData={handelChangeCity}/>
             </div>
             <div className="form-group">
-              <ListSelect dataObj={countryIsoCode} label="Teacher" selectData={country} setSelectData={handelChangecountry}/>
+              <ListSelect dataObj={listCountryWithIso} label="Teacher" selectData={country} setSelectData={handelChangecountry}/>
             </div>
             <div className="form-group">
-              <ListSelect dataObj={countryIsoCode} label="languages" selectData={country} setSelectData={handelChangecountry}/>
+              <ListSelect dataObj={listCountryWithIso} label="languages" selectData={country} setSelectData={handelChangecountry}/>
             </div>
             <div className="form-group">
                     <Input  typeInput="date" />

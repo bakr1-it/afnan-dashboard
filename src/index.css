@@ -34,7 +34,7 @@
         @apply bg-canvas-bg
     }
     .btn{
-        @apply bg-review-btn p-2 rounded-md text-white cursor-pointer hover:bg-secondary
+        @apply  p-2 rounded-md text-white cursor-pointer bg-secondary hover:bg-review-btn
 
     }
 }
@@ -78,7 +78,7 @@
         }
         }
         .content{
-            @apply flex-1 flex flex-col pb-2 px-2 gap-4 overflow-y-auto;
+            @apply flex-1 flex flex-col pb-2 px-2 gap-4 overflow-y-auto ;
         }
         /**!  end style for side bar    */
     
@@ -92,7 +92,7 @@
     }
     /**todo style for outlet */
     .outlet{
-        @apply  min-h-screen 
+        @apply  min-h-screen relative;
     }
     /**todo style for user */ 
     .container-user-info{
@@ -127,6 +127,13 @@
       
         .title-ui{
             @apply text-2xl font-semibold p-2 text-neutral-body border-border-default border-1 inline-block m-2
+        }
+        .error{
+            @apply text-red-600 font-semibold ms-1
+        }
+        .container-alert-success{
+            @apply absolute top-2 right-4 z-40;
+       
         }
     
 
