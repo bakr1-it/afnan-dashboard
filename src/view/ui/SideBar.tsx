@@ -15,8 +15,8 @@ interface SideBarProps {
 const links = [
   { to: "/academic", id: 1, icon: <FaSchool />, text: "Academic" },
   { to: "/language", id: 2, icon: <FaLanguage />, text: "language" },
-  { to: "/student", id: 3, icon: <HiUsers />, text: "Student" },
-  { to: "/teachers", id: 4, icon: <GiTeacher />, text: "Teacher" },
+  { to: "/teachers", id: 3, icon: <GiTeacher />, text: "Teacher" },
+  { to: "/student", id: 4, icon: <HiUsers />, text: "Student" },
 ];
 
 export default function SideBar({ isOpen, onClose }: SideBarProps) {

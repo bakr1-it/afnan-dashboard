@@ -7,15 +7,24 @@ import AlertSuccess from "../components/AlertSuccess";
 
 
 export default function NewAcademic() {
+   /**
+    * todo use ref for all input 
+    */
   const refName= useRef<HTMLInputElement>(null) as React.RefObject<HTMLInputElement>;
   const refEmail=  useRef<HTMLInputElement>(null) as React.RefObject<HTMLInputElement>;
   const refPassword=  useRef<HTMLInputElement>(null) as React.RefObject<HTMLInputElement>;
+  /**
+   * todo use state for loading data and show alert and show error
+   */
   const [isLoading,setIsLoading]= useState(false);
   const [showAlert,setShowAlert]= useState({typeAlert:"",message:"",isShow:false});
   const [errors,setErros] = useState(
    {email:"", name:"",password:''}
   );
   
+  /**
+   *todo funciton to insert data to supebase 
+   */
 
    function handelOnSubmit(ev :SyntheticEvent<HTMLFormElement> ){
    ev.preventDefault();
@@ -51,6 +60,7 @@ inserRow({tableName:"academies",payload:payload})
 
 
   }
+
   return (
 <>
  <div className="title-ui">

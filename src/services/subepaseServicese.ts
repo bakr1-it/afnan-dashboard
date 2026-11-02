@@ -13,3 +13,10 @@ if(error) throw error;
 return {data};
 
 }
+export async function getTable(tableName:string){
+    const {error,data} = await supabase
+    .from(tableName)
+    .select("*")
+    if(error) throw error;
+    return data;
+}
