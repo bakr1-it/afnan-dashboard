@@ -7,35 +7,12 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Link } from 'react-router-dom';
-import { getTable } from '../../services/subepaseServicese';
-import { useEffect, useState } from 'react';
-import Loading from '../components/Loading';
-
-interface TypeLnaguage{
-  name:string,
-  email:string,
-  id:string,
-  created_at:string,
-
-}
+import { useAcademicLanguage } from '../../context/AcademicLnaguage';
 
 
 export default function Academic() {
-const [isLoading,setIsLoading]=useState(false);
-  const [rows,setRows]=useState <Array<TypeLnaguage>>([]);
-  useEffect(()=>{
-    setIsLoading(true);
-  getTable("academies")
-  .then((data)=>{
-    setRows(data);
-  }).catch((error)=>{
-  }).finally(()=>{
-    setIsLoading(false);
-  })
-  
-  },[]);
 
-
+const {academies} = useAcademicLanguage();
  return (
  <>
 <div className="container-header-academies container-components">
@@ -56,16 +33,10 @@ const [isLoading,setIsLoading]=useState(false);
             <TableCell align="left">Action</TableCell>
           </TableRow>
         </TableHead>
-        {isLoading 
-        ?<TableBody >
-          <TableRow>
-            <TableCell align="left" colSpan={3}><Loading /></TableCell>
-          </TableRow>
-        </TableBody>
-      : 
+
         <TableBody>
           
-          {rows.map((row) => (
+          {academies.map((row) => (
             <TableRow
             key={row.name} 
             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -76,7 +47,7 @@ const [isLoading,setIsLoading]=useState(false);
             </TableRow>
           ))}
         </TableBody>
-        }
+        
       </Table>
     </TableContainer>
   </>

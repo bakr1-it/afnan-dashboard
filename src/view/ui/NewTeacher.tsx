@@ -1,7 +1,5 @@
-import AutoCompliate from "../components/AutoCompliate";
 import MailFmail from "../components/MailFmail";
 import ListSelect from "../components/ListSelect";
-import { Country }  from 'country-state-city';
 import { PhoneInput } from 'react-international-phone';
 import Input from "../components/Input";
 import 'react-international-phone/style.css';
@@ -10,11 +8,11 @@ import { listCountryWithIso } from "../constants/country";
 export default function NewTeacher() {
     const [phone, setPhone] = useState('');
      const [country ,setCountry]= useState('');
-       const [listCity,setListCity]=useState<string[]>([]);
+
 
  const handelChangecountry= (ev:React.ChangeEvent<HTMLSelectElement>)=>{
 setCountry(ev.target.value);
-} 
+}
   return (
      <>
      <div className="title-ui">

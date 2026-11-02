@@ -4,7 +4,7 @@ import Users from "./view/ui/Users";
 import Teachers from "./view/ui/Teachers";
 import NewStudent from "./view/ui/NewStudent";
 import NewTeacher from "./view/ui/NewTeacher";
-import Lnaguage from "./view/ui/Lnaguage";
+import Lnaguage from "./view/ui/languag";
 import NewLanguage from "./view/ui/NewLanguage";
 import Academic from "./view/ui/Academic";
 import NewAcademic from "./view/ui/NewAcademic";
