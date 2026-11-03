@@ -4,8 +4,17 @@ import Input from "../components/Input";
 import IconLoad from "../components/IconLoad";
 import AlertSuccess from "../components/AlertSuccess";
 import { vaildatedBeforeSend } from "../../helper";
+import { useAuth } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export default function SignIn() {
+  const { signIn ,profile} = useAuth();
+  const navigate = useNavigate();
+if(profile){
+  navigate("/",{replace:true});
+  return;
+
+}
   const refName = useRef<HTMLInputElement>(null) as React.RefObject<HTMLInputElement>;
   const refEmail = useRef<HTMLInputElement>(null) as React.RefObject<HTMLInputElement>;
   const refPassword = useRef<HTMLInputElement>(null) as React.RefObject<HTMLInputElement>;

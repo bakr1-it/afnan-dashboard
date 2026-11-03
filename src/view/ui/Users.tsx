@@ -18,7 +18,7 @@ import Loading from "../components/Loading";
 import { listCountryWithIso } from "../constants/country";
 import { converTimeToDate } from "../../helper";
 import { useAcademicLanguage } from "../../context/AcademicLnaguage";
-export interface UserData {
+interface UserData {
   id: string;
   name: string;
   email: string;
@@ -103,11 +103,20 @@ function Row({ row }: { row: UserData }) {
 
 export default function User() {
   const {teachers} = useAcademicLanguage();
+
+  const teacherList  = React.useMemo(()=>{
+    const arr :Record<string,string>={"all":"All"};
+    teachers.forEach((t)=>{
+      arr[t.id]=t.name;
+    }) 
+    return arr;
+  },[teachers])
+  
   const [rows, setRows] = React.useState<UserData[]>([]);
   const [loading, setLoading] = React.useState(false);
   const [selectTeacher,setSelectTeacer] = React.useState("");
 
-function handelOnChangeTeacher(ev:React.ChangeEvent<HTMLSelectElement>){
+  function handelOnChangeTeacher(ev:React.ChangeEvent<HTMLSelectElement>){
   setSelectTeacer(ev.target.value);
 
 }
@@ -127,6 +136,11 @@ function handelOnChangeTeacher(ev:React.ChangeEvent<HTMLSelectElement>){
         setLoading(false);
       });
   }, []);
+const filterrow=  React.useMemo(()=>{
+    if(!selectTeacher || selectTeacher=="all")
+    return rows;
+  return rows.filter((row)=>row.teacher_id == selectTeacher);
+},[rows,selectTeacher])
 
   return (
     <>
@@ -135,7 +149,8 @@ function handelOnChangeTeacher(ev:React.ChangeEvent<HTMLSelectElement>){
       </div>
       <div className="filter-data">
         <div className="list">
-          <ListSelect  selectData={selectTeacher} setSelectData={handelOnChangeTeacher} />
+          <p>select student for teacher</p>
+          <ListSelect dataObj={teacherList} selectData={selectTeacher} setSelectData={handelOnChangeTeacher} />
         </div>
         <div className="new-student">
           <Link to="/newStudent" className="btn">
@@ -165,11 +180,21 @@ function handelOnChangeTeacher(ev:React.ChangeEvent<HTMLSelectElement>){
             </TableBody>
           ) : (
             <TableBody>
-              {rows.map((row) => (
+              {filterrow.map((row) => (
                 <Row key={row.id} row={row} />
               ))}
             </TableBody>
-          )}
+            )}
+            {!loading && filterrow.length==0 && 
+            <TableBody>
+                <TableRow>
+                <TableCell align="center" colSpan={6}>
+                No student For This teacher
+                </TableCell>
+              </TableRow>
+
+            </TableBody>
+            }
         </Table>
       </TableContainer>
     </>

@@ -11,6 +11,7 @@ import { getTableTeacher } from '../../services/subepaseServicese';
 import React, { useEffect, useMemo, useState } from 'react';
 import Loading from '../components/Loading';
 import { useAcademicLanguage } from '../../context/AcademicLnaguage'; 
+import { useAuth } from '../../context/AuthContext';
 
 interface Teacher {
   id: string;
@@ -32,7 +33,6 @@ export default function Teachers() {
   const [teacher,setTeacher]= useState<Teacher[]>([]);
   const [loading,setLoading]= useState(false);
   const [selectAcademic,setSelectAcademic]= useState("");
-
   const {academies}= useAcademicLanguage();
 
     const TypeAcademic=  useMemo(()=>{
@@ -72,11 +72,14 @@ export default function Teachers() {
     setSelectAcademic(ev.target.value);
 
   }
+    const {profile} = useAuth();
+    if(profile.role == "student") return;
 return (
   <>
        <div className="title-ui">
   <h1>All Teacher</h1>
  </div>
+{(profile.role=="admin" || profile.role=="super admin" )&& (
               <div className="filter-data">
                  <div className="list">
                   <p>select teacher for academic</p>
@@ -88,6 +91,8 @@ return (
      
                  </div>
                  </div>
+
+)}
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>

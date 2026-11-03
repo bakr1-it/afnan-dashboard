@@ -10,6 +10,7 @@ import Academic from "./view/ui/Academic";
 import NewAcademic from "./view/ui/NewAcademic";
 import Login from "./view/ui/Login";
 import SignIn from "./view/ui/SignIn";
+import Dashboard from "./view/ui/Dashboard";
 
 export const router = createBrowserRouter([
     {
@@ -23,14 +24,16 @@ export const router = createBrowserRouter([
     {
         path: '/' , element:<App />,
         children:[
+            {path:'/dashboard' , element:<Dashboard />},
             {path:'/student' , element:<Users />},
             {path:'/academic' , element:<Academic />},
-            {path:'/language' , element:<Lnaguage />},
+            {path:'/language' , element:<Lnaguage /> },
             {path:'/teachers' , element:<Teachers />},
             {path:'/newStudent' , element:<NewStudent />},
             {path:'/newTeacher' , element:<NewTeacher />},
             {path:'/newLnaguage' , element:<NewLanguage />},
             {path:'/NewAcademic' , element:<NewAcademic />},
+            {index:true , element:<Dashboard />},
         ]
     }
 ]);

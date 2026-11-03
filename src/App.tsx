@@ -2,6 +2,10 @@ import { Outlet } from "react-router-dom"
 import SideBar from "./view/ui/SideBar"
 import { HiOutlineMenuAlt2 } from "react-icons/hi";
 import { useState } from "react";
+import DropDown from "./view/ui/DropDown";
+import { useAuth } from "./context/AuthContext";
+import { useNavigate } from "react-router-dom";
+import Loading from "./view/components/Loading";
 
 function App() {
   /**
@@ -9,6 +13,22 @@ function App() {
    * use state
    */
 const [isOpen , setIsOpen]= useState(false);
+const {session ,profile,isLoading}= useAuth();
+const navigate = useNavigate();
+const handleOnOpen = ()=>{
+  setIsOpen(!isOpen);
+}
+if(isLoading){
+  return (
+  <div className="container-loading">
+<Loading />
+    </div>
+  )
+}
+if(!isLoading && (!session || !profile)){
+  navigate("/login" , {replace:true});
+  return;
+}
 /**
  * ! 
  * end for use state
@@ -17,9 +37,6 @@ const [isOpen , setIsOpen]= useState(false);
  * todo 
  * handel function 
 */
-const handleOnOpen = ()=>{
-  setIsOpen(!isOpen);
-}
 /**
  * !
  * end handel function 
@@ -38,7 +55,7 @@ const handleOnOpen = ()=>{
 </button>
           
           <div className="user-info">
-            name user 
+           <DropDown />
 
           </div>
 

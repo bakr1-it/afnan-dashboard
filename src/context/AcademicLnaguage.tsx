@@ -48,8 +48,7 @@ useEffect(()=>{
     getTeacherNameId()
     .then((data)=>{
         setTeachers(data);
-        console.log("data this data for teacher name and id ");
-        console.log(data);
+  
     }).catch((error)=>{
              console.log("this error in fule academic language context for teacher id ");
         console.log(error)

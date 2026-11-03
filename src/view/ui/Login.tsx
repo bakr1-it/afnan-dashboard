@@ -1,16 +1,24 @@
 import { useRef, useState, type SyntheticEvent } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, replace, useNavigate } from "react-router-dom";
 import Input from "../components/Input";
 import IconLoad from "../components/IconLoad";
 import AlertSuccess from "../components/AlertSuccess";
 import { vaildatedBeforeSend } from "../../helper";
 import { useAuth } from "../../context/AuthContext";
 
+
 export default function Login() {
+  
   const refEmail = useRef<HTMLInputElement>(null) as React.RefObject<HTMLInputElement>;
   const refPassword = useRef<HTMLInputElement>(null) as React.RefObject<HTMLInputElement>;
-const { signIn } = useAuth();
+const { signIn ,profile} = useAuth();
+
 const navigate = useNavigate();
+if(profile){
+  navigate("/dashboard" ,{replace:true});
+  return;
+
+}
   const [isLoading, setIsLoading] = useState(false);
   const [showAlert, setShowAlert] = useState({ typeAlert: "", message: "", isShow: false });
   const [errors, setErros] = useState<Record<string, string>>({

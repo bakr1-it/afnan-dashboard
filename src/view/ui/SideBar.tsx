@@ -6,6 +6,9 @@ import { FaLanguage } from "react-icons/fa6";
 import { GiTeacher } from "react-icons/gi";
 import { motion, AnimatePresence } from "motion/react";
 import logo from "../../assets/images/logo.svg";
+import { useAuth } from "../../context/AuthContext";
+import { TbLayoutDashboard } from "react-icons/tb";
+
 
 interface SideBarProps {
   isOpen: boolean;
@@ -13,13 +16,16 @@ interface SideBarProps {
 }
 
 const links = [
-  { to: "/academic", id: 1, icon: <FaSchool />, text: "Academic" },
-  { to: "/language", id: 2, icon: <FaLanguage />, text: "language" },
-  { to: "/teachers", id: 3, icon: <GiTeacher />, text: "Teacher" },
-  { to: "/student", id: 4, icon: <HiUsers />, text: "Student" },
+  { to: "/dashboard", id: 1, icon: <TbLayoutDashboard />, text: "Dashboard"},
+  { to: "/academic", id: 2, icon: <FaSchool />, text: "Academic" ,role:"super admin"},
+  { to: "/language", id: 3, icon: <FaLanguage />, text: "language" ,role:"admin"},
+  { to: "/teachers", id: 4, icon: <GiTeacher />, text: "Teacher" ,role:"teacher"},
+  { to: "/student", id: 5, icon: <HiUsers />, text: "Student" ,role:"student"},
 ];
 
 export default function SideBar({ isOpen, onClose }: SideBarProps) {
+  const {profile} = useAuth();
+  if(profile.role !== "super admin") return;
   return (
     <AnimatePresence>
       {isOpen && (

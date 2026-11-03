@@ -8,11 +8,14 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Link } from 'react-router-dom';
 import { useAcademicLanguage } from '../../context/AcademicLnaguage';
+import { useAuth } from '../../context/AuthContext';
 
 
 
 export default function Lnaguage() {
 const {languagues } =  useAcademicLanguage();
+  const {profile} = useAuth();
+  if(profile.role !== "super admin" || profile.role !== "admin") return;
 
   return (
  <>
