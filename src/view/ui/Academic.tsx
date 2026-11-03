@@ -6,13 +6,17 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { useAcademicLanguage } from '../../context/AcademicLnaguage';
+import { useAuth } from '../../context/AuthContext';
 
 
 export default function Academic() {
 
 const {academies} = useAcademicLanguage();
+  const {profile} = useAuth();
+  debugger
+  if(profile.role !== "super admin" )  return <Navigate to="/dashboard" replace/>;
  return (
  <>
 <div className="container-header-academies container-components">

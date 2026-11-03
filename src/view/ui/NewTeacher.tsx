@@ -10,6 +10,8 @@ import inserRow from "../../services/subepaseServicese";
 import IconLoad from "../components/IconLoad";
 import AlertSuccess from "../components/AlertSuccess";
 import { vaildatedBeforeSend } from "../../helper";
+import { useAuth } from "../../context/AuthContext";
+import { Navigate } from "react-router-dom";
 export default function NewTeacher() {
   /**
    * todo context for academic and language
@@ -139,6 +141,9 @@ setSelectAcademic("");
    * 
    * ! end all function handel on chagne 
    */
+    const {profile} = useAuth();
+    if(profile.role == "student") return <Navigate to="/dashboard" replace/>
+
 
   return (
      <>

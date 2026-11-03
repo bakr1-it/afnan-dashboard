@@ -5,6 +5,8 @@ import inserRow from "../../services/subepaseServicese";
 import  IconLoad from "../components/IconLoad";
 import AlertSuccess from "../components/AlertSuccess";
 import { vaildatedBeforeSend } from "../../helper";
+import { Navigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
 
 export default function NewAcademic() {
@@ -59,6 +61,8 @@ inserRow({tableName:"academies",payload:payload})
 
 
   }
+const {profile} = useAuth();
+    if(profile.role !== "super admin" )  return <Navigate to="/dashboard" replace/>;
 
   return (
 <>

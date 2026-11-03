@@ -9,23 +9,22 @@ import logo from "../../assets/images/logo.svg";
 import { useAuth } from "../../context/AuthContext";
 import { TbLayoutDashboard } from "react-icons/tb";
 
-
 interface SideBarProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
 const links = [
-  { to: "/dashboard", id: 1, icon: <TbLayoutDashboard />, text: "Dashboard"},
-  { to: "/academic", id: 2, icon: <FaSchool />, text: "Academic" ,role:"super admin"},
-  { to: "/language", id: 3, icon: <FaLanguage />, text: "language" ,role:"admin"},
-  { to: "/teachers", id: 4, icon: <GiTeacher />, text: "Teacher" ,role:"teacher"},
-  { to: "/student", id: 5, icon: <HiUsers />, text: "Student" ,role:"student"},
+  { to: "/dashboard", id: 1, icon: <TbLayoutDashboard />, text: "Dashboard",role:["super admin","admin","teacher","student"]},
+  { to: "/academic", id: 2, icon: <FaSchool />, text: "Academic" ,role:["super admin"]},
+  { to: "/language", id: 3, icon: <FaLanguage />, text: "language" ,role:["super admin","admin"]},
+  { to: "/teachers", id: 4, icon: <GiTeacher />, text: "Teacher" ,role:["super admin","admin","teacher"]},
+  { to: "/student", id: 5, icon: <HiUsers />, text: "Student" ,role:["super admin","admin","teacher","student"]},
 ];
 
 export default function SideBar({ isOpen, onClose }: SideBarProps) {
+
   const {profile} = useAuth();
-  if(profile.role !== "super admin") return;
   return (
     <AnimatePresence>
       {isOpen && (
@@ -44,12 +43,21 @@ export default function SideBar({ isOpen, onClose }: SideBarProps) {
               <h1>Afnan</h1>
             </div>
 
-            {links.map((link) => (
-              <NavLink to={link.to} key={link.id} onClick={onClose}>
-                {link.icon}
-                <span>{link.text}</span>
+            {links.map((link) => {
+              if(!link.role.includes(profile.role)) return;
+              return(
+
+                
+                
+                <NavLink to={link.to} key={link.id} onClick={onClose}>
+               
+                  {link.icon}
+                  <span>{link.text}</span>
+          
               </NavLink>
-            ))}
+              )
+          }
+            )}
           </motion.aside>
         </>
       )}

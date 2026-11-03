@@ -6,7 +6,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import ListSelect from '../components/ListSelect';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { getTableTeacher } from '../../services/subepaseServicese';
 import React, { useEffect, useMemo, useState } from 'react';
 import Loading from '../components/Loading';
@@ -73,7 +73,7 @@ export default function Teachers() {
 
   }
     const {profile} = useAuth();
-    if(profile.role == "student") return;
+    if(profile.role == "student") return <Navigate to="/dashboard" replace/>
 return (
   <>
        <div className="title-ui">

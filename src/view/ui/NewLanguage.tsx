@@ -7,6 +7,8 @@ import inserRow from "../../services/subepaseServicese";
 import  IconLoad from "../components/IconLoad";
 import Checked from '../components/Checked';
 import { vaildatedBeforeSend } from "../../helper";
+import { useAuth } from '../../context/AuthContext';
+import { Navigate } from 'react-router-dom';
 export default function NewLanguage() {
   const refName= useRef<HTMLInputElement>(null) as React.RefObject<HTMLInputElement>;
   const refCode= useRef<HTMLInputElement>(null) as React.RefObject<HTMLInputElement>;
@@ -55,6 +57,8 @@ refCode.current.value="";
   
   
     }
+      const {profile} = useAuth();
+      if(profile.role !== "super admin" || profile.role !== "admin")  return  <Navigate to="/dashboard" replace/>;
   return (
 <>
  <div className="title-ui">
