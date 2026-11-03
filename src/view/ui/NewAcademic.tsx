@@ -7,6 +7,7 @@ import AlertSuccess from "../components/AlertSuccess";
 import { vaildatedBeforeSend } from "../../helper";
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import { useAcademicLanguage } from "../../context/AcademicLnaguage";
 
 
 export default function NewAcademic() {
@@ -28,6 +29,7 @@ export default function NewAcademic() {
   /**
    *todo funciton to insert data to supebase 
    */
+  const {refreshTable} = useAcademicLanguage();
 
    function handelOnSubmit(ev :SyntheticEvent<HTMLFormElement> ){
    ev.preventDefault();
@@ -52,6 +54,7 @@ inserRow({tableName:"academies",payload:payload})
       refEmail.current.value="";
       refName.current.value="";
       refPassword.current.value="";
+      refreshTable("academies");
 
 }).catch((error)=>{
       setShowAlert({typeAlert:"error",message:error.message , isShow:true});
@@ -61,6 +64,7 @@ inserRow({tableName:"academies",payload:payload})
 
 
   }
+  
 const {profile} = useAuth();
     if(profile?.role !== "super admin" )  return <Navigate to="/dashboard" replace/>;
 

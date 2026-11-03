@@ -83,6 +83,10 @@ const handelOnChangeLanguage = (ev:React.ChangeEvent<HTMLSelectElement>)=>{
 setSelectLang(ev.target.value);
 
 }
+
+  const {refreshTable} = useAcademicLanguage();
+
+
      function handelOnSubmit(ev :SyntheticEvent<HTMLFormElement> ){
      ev.preventDefault();
   const payload= {
@@ -127,6 +131,7 @@ setCountry("");
 setPhone("");
 setSelectLang("");
 setSelectAcademic("");
+refreshTable("teachers");
 
   }).catch((error)=>{
         setShowAlert({typeAlert:"error",message:error.message , isShow:true});

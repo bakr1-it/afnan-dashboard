@@ -9,6 +9,7 @@ import Checked from '../components/Checked';
 import { vaildatedBeforeSend } from "../../helper";
 import { useAuth } from '../../context/AuthContext';
 import { Navigate } from 'react-router-dom';
+import { useAcademicLanguage } from '../../context/AcademicLnaguage';
 export default function NewLanguage() {
   const refName= useRef<HTMLInputElement>(null) as React.RefObject<HTMLInputElement>;
   const refCode= useRef<HTMLInputElement>(null) as React.RefObject<HTMLInputElement>;
@@ -21,6 +22,8 @@ export default function NewLanguage() {
    {name:"", code:""}
   );
   
+  const {refreshTable} = useAcademicLanguage();
+
      function handelOnSubmit(ev :SyntheticEvent<HTMLFormElement> ){
      ev.preventDefault();
   const payload= {
@@ -48,6 +51,7 @@ newError= vaildatedBeforeSend(payload);
         setShowAlert({typeAlert:"success",  message: ' language  '+''+data.data.name + 'created has been success' , isShow:true});  
 refName.current.value="";
 refCode.current.value="";
+refreshTable("languages");
 
   }).catch((error)=>{
         setShowAlert({typeAlert:"error",message:error.message , isShow:true});
