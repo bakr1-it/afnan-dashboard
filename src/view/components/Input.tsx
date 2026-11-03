@@ -8,6 +8,6 @@ interface TypePropsInput{
 
 export default function Input({typeInput,label,ref}:TypePropsInput) {
   return (
-<TextField inputRef={ref} id="standard-basic" label={label} variant="outlined" size="small" type={typeInput} fullWidth/>
+<TextField inputRef={ref}  label={label} variant="outlined" size="small" type={typeInput} fullWidth/>
   )
 }
