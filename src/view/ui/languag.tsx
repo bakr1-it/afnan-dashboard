@@ -16,7 +16,7 @@ export default function Lnaguage() {
 const {languagues } =  useAcademicLanguage();
 
   const {profile} = useAuth();
-  if(profile.role !== "super admin" || profile.role !== "admin")  return  <Navigate to="/dashboard" replace/>;
+  if(!["admin","super admin"].includes(profile?.role))  return  <Navigate to="/dashboard" replace/>;
 
   return (
  <>

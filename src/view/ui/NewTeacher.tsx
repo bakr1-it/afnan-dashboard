@@ -142,7 +142,7 @@ setSelectAcademic("");
    * ! end all function handel on chagne 
    */
     const {profile} = useAuth();
-    if(profile.role == "student") return <Navigate to="/dashboard" replace/>
+    if(profile?.role == "student") return <Navigate to="/dashboard" replace/>
 
 
   return (

@@ -44,7 +44,7 @@ export default function SideBar({ isOpen, onClose }: SideBarProps) {
             </div>
 
             {links.map((link) => {
-              if(!link.role.includes(profile.role)) return;
+              if(!link.role.includes(profile?.role)) return;
               return(
 
                 

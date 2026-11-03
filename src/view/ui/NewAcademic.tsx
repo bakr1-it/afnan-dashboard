@@ -62,7 +62,7 @@ inserRow({tableName:"academies",payload:payload})
 
   }
 const {profile} = useAuth();
-    if(profile.role !== "super admin" )  return <Navigate to="/dashboard" replace/>;
+    if(profile?.role !== "super admin" )  return <Navigate to="/dashboard" replace/>;
 
   return (
 <>

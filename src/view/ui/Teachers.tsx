@@ -73,7 +73,7 @@ export default function Teachers() {
 
   }
     const {profile} = useAuth();
-    if(profile.role == "student") return <Navigate to="/dashboard" replace/>
+    if(profile?.role == "student") return <Navigate to="/dashboard" replace/>
 return (
   <>
        <div className="title-ui">

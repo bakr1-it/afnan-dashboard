@@ -15,8 +15,7 @@ export default function Academic() {
 
 const {academies} = useAcademicLanguage();
   const {profile} = useAuth();
-  debugger
-  if(profile.role !== "super admin" )  return <Navigate to="/dashboard" replace/>;
+  if(profile?.role !== "super admin" )  return <Navigate to="/dashboard" replace/>;
  return (
  <>
 <div className="container-header-academies container-components">
