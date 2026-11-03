@@ -11,6 +11,7 @@ import NewAcademic from "./view/ui/NewAcademic";
 import Login from "./view/ui/Login";
 import SignIn from "./view/ui/SignIn";
 import Dashboard from "./view/ui/Dashboard";
+import ErrorPage from "./view/ui/ErrorPage";
 
 export const router = createBrowserRouter([
     {
@@ -23,6 +24,7 @@ export const router = createBrowserRouter([
     },
     {
         path: '/' , element:<App />,
+        errorElement:<ErrorPage/>,
         children:[
             {path:'/dashboard' , element:<Dashboard />},
             {path:'/student' , element:<Users />},
