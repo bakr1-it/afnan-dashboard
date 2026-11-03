@@ -8,13 +8,23 @@ import Lnaguage from "./view/ui/languag";
 import NewLanguage from "./view/ui/NewLanguage";
 import Academic from "./view/ui/Academic";
 import NewAcademic from "./view/ui/NewAcademic";
-export const router  = createBrowserRouter([
+import Login from "./view/ui/Login";
+import SignIn from "./view/ui/SignIn";
+
+export const router = createBrowserRouter([
+    {
+        path: '/login',
+        element: <Login />
+    },
+    {
+        path: '/signin',
+        element: <SignIn />
+    },
     {
         path: '/' , element:<App />,
         children:[
             {path:'/student' , element:<Users />},
             {path:'/academic' , element:<Academic />},
-            {path:'/language' , element:<Lnaguage />},
             {path:'/language' , element:<Lnaguage />},
             {path:'/teachers' , element:<Teachers />},
             {path:'/newStudent' , element:<NewStudent />},
@@ -23,4 +33,4 @@ export const router  = createBrowserRouter([
             {path:'/NewAcademic' , element:<NewAcademic />},
         ]
     }
-])
+]);

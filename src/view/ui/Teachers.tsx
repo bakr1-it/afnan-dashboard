@@ -60,7 +60,7 @@ export default function Teachers() {
     .then((data)=>{
       setTeacher(data);
     }).catch((error)=>{
-      
+      console.log(error);
     }).finally(()=>{
       
       setLoading(false);

@@ -152,5 +152,11 @@
     .react-international-phone-country-selector-dropdown{
            @apply !z-50;
     }
+    .auth-container{
+        @apply min-h-screen w-full flex flex-col justify-center items-center p-4;
+    }
+    .form-auth{
+        @apply bg-canvas-card border border-border-default rounded-xl shadow-2xs flex flex-col gap-5 p-6 w-full max-w-md;
+    }
 
         }

@@ -50,3 +50,49 @@ export async function getTeacherNameId() {
 
   return data;
 }
+export async function getStudentsWithTeacherAndReel() {
+  const { data, error } = await supabase
+    .from("users")
+    .select(`
+      id,
+      name,
+      email,
+      phone_number,
+      is_male,
+      teacher_id,
+      country,
+      language_code,
+      is_new_muslim,
+      birth_date,
+      city,
+      last_reels_id,
+      created_at,
+      teachers (
+        id,
+        name
+      ),
+      student_level_progress (
+      level_id,
+        progress,
+        stars,
+        is_completed,
+        is_unlocked,
+        tours (
+    name,
+    ar_name,
+    order
+  )
+    ),
+      reels (
+        id,
+        title
+      )
+    `);
+
+  if (error) {
+    console.error("Error fetching students data:", error.message);
+    throw error;
+  }
+
+  return data;
+}
