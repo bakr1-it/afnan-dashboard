@@ -120,7 +120,6 @@ if(payload.phone.length <=7){
   
   setIsLoading(true);
   
-  debugger;
   inserRow({tableName:"teachers",payload:payload})
   .then((data)=>{
         setShowAlert({typeAlert:"success",  message: ' teacher '+' ' +data.data.name + 'created has been success' , isShow:true});  

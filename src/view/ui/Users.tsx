@@ -39,20 +39,28 @@ interface UserData {
 
 function PrintDataUser({ label, value }: { label: string; value: any }) {
   let displayValue = value;
-  if (label === "created_at") {
+
+  if (label === "created_at" || label === "birth_date") {
     displayValue = converTimeToDate(value);
   } else if (label === "student_level_progress") {
     if (Array.isArray(value) && value.length > 0) {
       const lastProgress = value[value.length - 1];
-      displayValue = `${lastProgress.tours.ar_name}`;
+      displayValue = lastProgress?.tours?.ar_name || "لا يوجد تقدم";
     } else {
       displayValue = "لا يوجد تقدم";
     }
+  } else if (label === "is_male") {
+    displayValue = value === true ? "ذكر" : "أنثى" ;
+  } else if (label === "is_new_muslim") {
+    displayValue = value === true ? "نعم" : "لا";
   }
+
+
+
   return (
     <Grid size={{ xs: 12, sm: 6, md: 4 }} className="user-info-item">
-      <p>{label}</p>
-      <p>{displayValue !== null && displayValue !== undefined ? String(displayValue) : "—"}</p>
+      <p className="font-semibold text-gray-700">{ label}</p>
+      <p className="text-gray-600">{displayValue !== null && displayValue !== undefined && displayValue !== "" ? String(displayValue) : "—"}</p>
     </Grid>
   );
 }
@@ -86,11 +94,11 @@ function Row({ row }: { row: UserData }) {
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box sx={{ margin: 1 }}>
               <Grid container spacing={2} className="container-user-info">
-                {Object.entries(row)
-                  .filter(([key]) => key !== "teachers" && key !== "reels" && key !== "password")
-                  .map(([keys, values], idx) => (
-                    <PrintDataUser key={idx} label={keys} value={values} />
-                  ))}
+              {Object.entries(row)
+  .filter(([key]) => !["teachers", "reels", "password", "id", "teacher_id", "last_reels_id"].includes(key))
+  .map(([keys, values]) => (
+    <PrintDataUser key={keys} label={keys} value={values} />
+  ))}
 
               </Grid>
             </Box>

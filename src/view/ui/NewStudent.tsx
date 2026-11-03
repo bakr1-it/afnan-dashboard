@@ -37,7 +37,7 @@ export default function NewStudent() {
      */
     const [isLoading,setIsLoading]= useState(false);
     const [errors,setErros] = useState(
-    {name:"", email:"" , password:"",country:"",language_code:"",is_mail:null,academy_id:"",phone:"",city:'',teacher_id:''}
+    {name:"", email:"" , password:"",country:"",language_code:"",is_mail:null,academy_id:"",phone_number:"",city:'',teacher_id:''}
      );
 /**
  * ! end handel when send form
@@ -134,14 +134,12 @@ setSelectTeacher(ev.target.value);
   }
 
 
-
   let newError :Record<string,string>={};
 newError = vaildatedBeforeSend(payload);
 
-  
 
 if(payload.phone_number.length <=7){
-  newError["phone"]="Invalid phone number";
+  newError["phone_number"]="Invalid phone number";
 }
   setErros(newError);
   
@@ -155,7 +153,7 @@ if(payload.phone_number.length <=7){
 
   inserRow({tableName:"users",payload:payload})
   .then((data)=>{
-        setShowAlert({typeAlert:"success",  message: ' teacher '+' ' +data.data.name + 'created has been success' , isShow:true});  
+        setShowAlert({typeAlert:"success",  message: ' student '+' ' +data.data.name + 'created has been success' , isShow:true});  
 refName.current.value="";
 refEmail.current.value="";
 refPassword.current.value="";
@@ -215,7 +213,7 @@ setSelectTeacher("");
         
         onChange={(phone) => setPhone(phone)}
       />
-                    <p className="error">{errors.phone}</p>
+                    <p className="error">{errors.phone_number}</p>
 
             </div>
             <div className="form-group">
@@ -235,6 +233,7 @@ setSelectTeacher("");
             </div>
             <div className="form-group">
                  <MailFmail refChecked={refChecked} />
+                <p className="error">{errors.is_mail}</p>
             </div>
             <div className="form-group">
                 <Checked ref={refIsNewMuslim} label="Is New Muslim"/>

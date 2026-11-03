@@ -1,4 +1,4 @@
-import { Outlet } from "react-router-dom"
+import { Navigate, Outlet } from "react-router-dom"
 import SideBar from "./view/ui/SideBar"
 import { HiOutlineMenuAlt2 } from "react-icons/hi";
 import { useState } from "react";
@@ -14,20 +14,18 @@ function App() {
    */
 const [isOpen , setIsOpen]= useState(false);
 const {session ,profile,isLoading}= useAuth();
-const navigate = useNavigate();
 const handleOnOpen = ()=>{
   setIsOpen(!isOpen);
 }
-if(isLoading){
+if(isLoading && !profile){
   return (
   <div className="container-loading">
 <Loading />
     </div>
   )
 }
-if(!isLoading && (!session || !profile)){
-  navigate("/login" , {replace:true});
-  return;
+if (!isLoading && (!session || !profile)) {
+  return <Navigate to="/login" replace />;
 }
 /**
  * ! 

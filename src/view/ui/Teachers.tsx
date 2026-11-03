@@ -79,7 +79,7 @@ return (
        <div className="title-ui">
   <h1>All Teacher</h1>
  </div>
-{(profile.role=="admin" || profile.role=="super admin" )&& (
+{(profile?.role=="admin" || profile?.role=="super admin" )&& (
               <div className="filter-data">
                  <div className="list">
                   <p>select teacher for academic</p>
@@ -129,7 +129,7 @@ return (
               <TableCell align="left">{row.email}</TableCell>
               <TableCell align="left">{row.phone}</TableCell>
               <TableCell align="left">{row.country}</TableCell>
-              <TableCell align="left">{row.academies.name}</TableCell>
+              <TableCell align="left">{row?.academies?.name}</TableCell>
             </TableRow>
           ))}
         </TableBody>

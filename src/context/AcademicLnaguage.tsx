@@ -74,13 +74,7 @@ try{
       return;
     }
 
-    getTable("academies")
-      .then((data) => {
-        setAcademies(data || []);
-      })
-      .catch((error) => {
-        console.error("Error fetching academies:", error);
-      });
+
 
 refreshTable();
   }, [isAuthenticated]);
