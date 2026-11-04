@@ -8,10 +8,11 @@ import Paper from '@mui/material/Paper';
 import ListSelect from '../components/ListSelect';
 import { Link, Navigate } from 'react-router-dom';
 import { getTableTeacher } from '../../services/subepaseServicese';
-import React, { useEffect, useMemo, useState } from 'react';
+import  { useEffect, useMemo, useState } from 'react';
 import Loading from '../components/Loading';
 import { useAcademicLanguage } from '../../context/AcademicLnaguage'; 
 import { useAuth } from '../../context/AuthContext';
+import type { SelectChangeEvent } from '@mui/material/Select';
 
 interface Teacher {
   id: string;
@@ -68,7 +69,8 @@ export default function Teachers() {
 
   },[]);
 
-  const handelOnChangeAcademic= (ev:React.ChangeEvent<HTMLSelectElement>)=>{
+  const handelOnChangeAcademic= (ev:SelectChangeEvent)=>{
+
     setSelectAcademic(ev.target.value);
 
   }

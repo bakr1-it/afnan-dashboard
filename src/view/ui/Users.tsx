@@ -18,6 +18,7 @@ import Loading from "../components/Loading";
 import { listCountryWithIso } from "../constants/country";
 import { converTimeToDate } from "../../helper";
 import { useAcademicLanguage } from "../../context/AcademicLnaguage";
+import type { SelectChangeEvent } from "@mui/material/Select";
 interface UserData {
   id: string;
   name: string;
@@ -124,7 +125,7 @@ export default function User() {
   const [loading, setLoading] = React.useState(false);
   const [selectTeacher,setSelectTeacer] = React.useState("");
 
-  function handelOnChangeTeacher(ev:React.ChangeEvent<HTMLSelectElement>){
+  function handelOnChangeTeacher(ev:SelectChangeEvent){
   setSelectTeacer(ev.target.value);
 
 }
@@ -135,7 +136,7 @@ export default function User() {
     getStudentsWithTeacherAndReel()
       .then((data) => {
         
-        setRows(data || []);
+       setRows((data as any) || [])
       })
       .catch((error) => {
         console.log(error);

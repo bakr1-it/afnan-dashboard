@@ -20,9 +20,16 @@ export default function NewAcademic() {
   /**
    * todo use state for loading data and show alert and show error
    */
+  
+interface alertTypeInfo{
+typeAlert : "success"|"error"|"warning"|"info",
+message:string, 
+isShow:boolean,  
+}
+
   const [isLoading,setIsLoading]= useState(false);
-  const [showAlert,setShowAlert]= useState({typeAlert:"",message:"",isShow:false});
-  const [errors,setErros] = useState(
+  const [showAlert,setShowAlert]= useState<alertTypeInfo>({typeAlert:"success",message:"",isShow:false});
+  const [errors,setErros] = useState<Record<string,string>>(
    {email:"", name:"",password:''}
   );
   
@@ -38,7 +45,7 @@ const payload= {
    email:refEmail.current.value,
    password:refPassword.current.value,
 }
-let newError :Record<string,any>={};;
+let newError :Record<string,any>={};
 newError= vaildatedBeforeSend(payload);
 setErros(newError);
 

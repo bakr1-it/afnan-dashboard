@@ -3,7 +3,7 @@ import ListSelect from "../components/ListSelect";
 import { PhoneInput } from 'react-international-phone';
 import Input from "../components/Input";
 import 'react-international-phone/style.css';
-import React, {  useMemo, useRef, useState, type ChangeEvent } from 'react';
+import React, {  useMemo, useRef, useState, type SyntheticEvent } from 'react';
 import { listCountryWithIso } from "../constants/country";
 import { useAcademicLanguage } from "../../context/AcademicLnaguage";
 import inserRow from "../../services/subepaseServicese";
@@ -12,6 +12,7 @@ import AlertSuccess from "../components/AlertSuccess";
 import { vaildatedBeforeSend } from "../../helper";
 import { useAuth } from "../../context/AuthContext";
 import { Navigate } from "react-router-dom";
+import type { SelectChangeEvent } from "@mui/material/Select";
 export default function NewTeacher() {
   /**
    * todo context for academic and language
@@ -59,10 +60,17 @@ const academicMap:  Record<string,string>={};
    /**
     * todo handel when send data 
     */
+
+
+   interface alertTypeInfo{
+typeAlert : "success"|"error"|"warning"|"info",
+message:string, 
+isShow:boolean,  
+}
      const [isLoading,setIsLoading]= useState(false);
-     const [showAlert,setShowAlert]= useState({typeAlert:"",message:"",isShow:false});
-     const [errors,setErros] = useState(
-      {name:"", email:"" , password:"",country:"",language_code:"",is_mail:null,academy_id:"",phone:""}
+     const [showAlert,setShowAlert]= useState<alertTypeInfo>({typeAlert:"success",message:"",isShow:false});
+     const [errors,setErros] = useState<Record<string,string|boolean>>(
+      {name:"", email:"" , password:"",country:"",language_code:"",is_mail:false,academy_id:"",phone:""}
      );
      /**
       * ! end handel when send data 
@@ -72,14 +80,14 @@ const academicMap:  Record<string,string>={};
   *
   * todo all function handel on chagne 
   */
- const handelChangecountry= (ev:React.ChangeEvent<HTMLSelectElement>)=>{
+ const handelChangecountry= (ev:SelectChangeEvent)=>{
 setCountry(ev.target.value);
 }
-const handelOnChangeAcademic = (ev:React.ChangeEvent<HTMLSelectElement>)=>{
+const handelOnChangeAcademic = (ev:SelectChangeEvent)=>{
 setSelectAcademic(ev.target.value);
 
 }
-const handelOnChangeLanguage = (ev:React.ChangeEvent<HTMLSelectElement>)=>{
+const handelOnChangeLanguage = (ev:SelectChangeEvent)=>{
 setSelectLang(ev.target.value);
 
 }

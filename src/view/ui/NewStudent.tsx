@@ -4,16 +4,16 @@ import 'react-international-phone/style.css';
 import {  City }  from 'country-state-city';
 import ListSelect from "../components/ListSelect";
 import AutoCompliate from "../components/AutoCompliate";
-import MailFmail from "../components/MailFmail";
-import RadioButton from "../components/RadioButton";
+import MailFmail from "../components/MailFmail";;
 import { listCountryWithIso } from "../constants/country";
 import inserRow from "../../services/subepaseServicese";
 import IconLoad from "../components/IconLoad";
 import AlertSuccess from "../components/AlertSuccess";
 import { vaildatedBeforeSend } from "../../helper";
 import { useAcademicLanguage } from "../../context/AcademicLnaguage";
-import React, {  useMemo, useRef, useState, type ChangeEvent } from 'react';
+import React, {  useMemo, useRef, useState, type SyntheticEvent } from 'react';
 import Checked from "../components/Checked";
+import type { SelectChangeEvent } from "@mui/material/Select";
 
 export default function NewStudent() {
    /**
@@ -25,7 +25,16 @@ export default function NewStudent() {
    const [listCity,setListCity]=useState<string[]>([]);
    const [selectCity,setSelectCity]=useState('');
     const [selectLang,setSelectLang]= useState('');
-    const [showAlert,setShowAlert]= useState({typeAlert:"",message:"",isShow:false});
+
+interface alertTypeInfo{
+typeAlert : "success"|"error"|"warning"|"info",
+message:string, 
+isShow:boolean,  
+}
+
+    const [showAlert,setShowAlert]= useState<alertTypeInfo>({typeAlert:"success",message:"",isShow:false});
+    
+    
     const [selectTeacher,setSelectTeacher]=useState('');
 
     /**
@@ -36,8 +45,8 @@ export default function NewStudent() {
      * todo handel when send form
      */
     const [isLoading,setIsLoading]= useState(false);
-    const [errors,setErros] = useState(
-    {name:"", email:"" , password:"",country:"",language_code:"",is_mail:null,academy_id:"",phone_number:"",city:'',teacher_id:''}
+    const [errors,setErros] = useState<Record<string,string|boolean>>(
+    {name:"", email:"" , password:"",country:"",language_code:"",is_male:false,academy_id:"",phone_number:"",city:'',teacher_id:''}
      );
 /**
  * ! end handel when send form
@@ -91,24 +100,24 @@ const academicMap:  Record<string,string>={};
  /**
   * todo all function for change value in input and select
   */
-const handelChangecountry= (ev:React.ChangeEvent<HTMLSelectElement>)=>{
+const handelChangecountry= (ev:SelectChangeEvent)=>{
 setCountry(ev.target.value);
 const iso = ev.target.value;
  setListCity( City.getCitiesOfCountry(iso)?.map((c)=>c.name) || []);
 } 
-const handelChangeCity = (ev:React.SyntheticEvent, value :string | null)=>{
- setSelectCity(value || "")
+const handelChangeCity = (_ev:React.SyntheticEvent, value: string | null)=>{
+ setSelectCity(value || '');
 }
 
-const handelOnChangeAcademic = (ev:React.ChangeEvent<HTMLSelectElement>)=>{
+const handelOnChangeAcademic = (ev:SelectChangeEvent)=>{
 setSelectAcademic(ev.target.value);
 
 }
-const handelOnChangeLanguage = (ev:React.ChangeEvent<HTMLSelectElement>)=>{
+const handelOnChangeLanguage = (ev: SelectChangeEvent)=>{
 setSelectLang(ev.target.value);
 
 }
-const handelOnChangeTeacher = (ev:React.ChangeEvent<HTMLSelectElement>)=>{
+const handelOnChangeTeacher = (ev: SelectChangeEvent)=>{
 setSelectTeacher(ev.target.value);
 
 }

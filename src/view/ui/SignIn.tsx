@@ -21,7 +21,15 @@ export default function SignIn() {
   const refPassword = useRef<HTMLInputElement>(null) as React.RefObject<HTMLInputElement>;
 
   const [isLoading, setIsLoading] = useState(false);
-  const [showAlert, setShowAlert] = useState({ typeAlert: "", message: "", isShow: false });
+
+interface alertTypeInfo{
+typeAlert : "success"|"error"|"warning"|"info",
+message:string, 
+isShow:boolean,  
+}
+  const [showAlert, setShowAlert] = useState<alertTypeInfo>({ typeAlert: "success", message: "", isShow: false });
+  
+  
   const [errors, setErros] = useState<Record<string, string>>({
     name: "",
     email: "",

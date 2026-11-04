@@ -4,7 +4,6 @@ import { HiOutlineMenuAlt2 } from "react-icons/hi";
 import { useState } from "react";
 import DropDown from "./view/ui/DropDown";
 import { useAuth } from "./context/AuthContext";
-import { useNavigate } from "react-router-dom";
 import Loading from "./view/components/Loading";
 
 function App() {

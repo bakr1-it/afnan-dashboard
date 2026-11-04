@@ -6,11 +6,10 @@ import MenuItem from '@mui/material/MenuItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
 import Tooltip from '@mui/material/Tooltip';
-import { MdPersonAdd, MdSettings, MdLogout } from "react-icons/md";
+import {  MdLogout } from "react-icons/md";
 import { useAuth } from '../../context/AuthContext';
-import { useNavigate, replace } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export default function DropDown() {
   const {signOut,profile} = useAuth();

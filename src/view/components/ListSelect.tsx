@@ -3,14 +3,13 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { type SelectChangeEvent } from '@mui/material/Select';
-import Button from '@mui/material/Button';
 interface TypeListSelect{
   data?:Array<string>;
   label?:string,
   dataObj?:Record<string,string>,
   dis?:boolean,
   selectData?:string,
-  setSelectData?:(ev:React.ChangeEvent<HTMLSelectElement>)=>void,
+setSelectData?: (event: SelectChangeEvent) => void;
 }
 export default function ListSelect({data,label,dataObj,dis,selectData='',setSelectData}:TypeListSelect) {
  

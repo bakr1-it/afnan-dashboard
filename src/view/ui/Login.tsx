@@ -1,5 +1,5 @@
 import { useRef, useState, type SyntheticEvent } from "react";
-import { Link, replace, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Input from "../components/Input";
 import IconLoad from "../components/IconLoad";
 import AlertSuccess from "../components/AlertSuccess";
@@ -19,8 +19,13 @@ if(profile){
   return;
 
 }
+interface alertTypeInfo{
+typeAlert : "success"|"error"|"warning"|"info",
+message:string, 
+isShow:boolean,  
+}
   const [isLoading, setIsLoading] = useState(false);
-  const [showAlert, setShowAlert] = useState({ typeAlert: "", message: "", isShow: false });
+  const [showAlert, setShowAlert] = useState<alertTypeInfo>({typeAlert:"success",message:"",isShow:false});
   const [errors, setErros] = useState<Record<string, string>>({
     email: "",
     password: "",

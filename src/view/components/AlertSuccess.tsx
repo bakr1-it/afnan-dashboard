@@ -2,7 +2,7 @@ import Alert from "@mui/material/Alert";
 import { AnimatePresence, motion } from "motion/react"
 import { useEffect } from "react";
 interface TypePropsAlertSuccess{
-    type:string,
+    type: "success" | "info" | "warning" | "error";
     message:string,
     isShow:boolean,
     onClose:()=>void,

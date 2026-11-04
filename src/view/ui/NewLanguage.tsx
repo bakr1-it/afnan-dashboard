@@ -15,10 +15,15 @@ export default function NewLanguage() {
   const refCode= useRef<HTMLInputElement>(null) as React.RefObject<HTMLInputElement>;
   const refChecked= useRef<HTMLInputElement>(null) as React.RefObject<HTMLInputElement>;
   
+  interface alertTypeInfo{
+typeAlert : "success"|"error"|"warning"|"info",
+message:string, 
+isShow:boolean,  
+}
 
   const [isLoading,setIsLoading]= useState(false);
-  const [showAlert,setShowAlert]= useState({typeAlert:"",message:"",isShow:false});
-  const [errors,setErros] = useState(
+  const [showAlert,setShowAlert]= useState<alertTypeInfo>({typeAlert:"success",message:"",isShow:false});
+  const [errors,setErros] = useState<Record<string,string>>(
    {name:"", code:""}
   );
   
@@ -62,7 +67,7 @@ refreshTable("languages");
   
     }
       const {profile} = useAuth();
-      if(profile?.role !== "super admin" || profile.role !== "admin")  return  <Navigate to="/dashboard" replace/>;
+      if(!["super admin","admin"].includes(profile?.role))  return  <Navigate to="/dashboard" replace/>;
   return (
 <>
  <div className="title-ui">
