@@ -12,6 +12,7 @@ import Login from "./view/ui/Login";
 import SignIn from "./view/ui/SignIn";
 import Dashboard from "./view/ui/Dashboard";
 import ErrorPage from "./view/ui/ErrorPage";
+import LevelNode from "./view/components/LevelNode";
 
 export const router = createBrowserRouter([
     {
@@ -36,6 +37,7 @@ export const router = createBrowserRouter([
             {path:'/newLnaguage' , element:<NewLanguage />},
             {path:'/NewAcademic' , element:<NewAcademic />},
             {index:true , element:<Dashboard />},
+            {path:"/level/:levelId", element:<LevelNode />}
         ]
     }
 ]);

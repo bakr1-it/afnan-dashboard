@@ -40,7 +40,7 @@ if (!isLoading && (!session || !profile)) {
  */
   return (
     
-    <div className="contianer-layout">
+    <div className="contianer-layout scroll-smooth">
       
               <SideBar isOpen={isOpen} onClose={handleOnOpen} />
 

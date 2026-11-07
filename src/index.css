@@ -173,5 +173,17 @@
     .MuiTabs-root{
         @apply my-2
     }
+    /**todo style for level node circle and line  */
+.level-node {
+        @apply relative flex justify-center items-center shrink-0 w-fit;
+    }
+    .circle {
+        @apply max-w-52 w-52 aspect-square rounded-full flex flex-col justify-center items-center bg-white relative z-10 rotate-x-45 shrink-0 select-none;
+        box-shadow: 0px 15px 0px #0D9488, 0px 20px 15px #059669;
+    }
+    .line {
+        @apply absolute -z-10 top-1/2 left-1/2 pointer-events-none;
+    }
+}
 
-        }
+        
