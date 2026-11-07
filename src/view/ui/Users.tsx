@@ -14,7 +14,7 @@ import Loading from "../components/Loading";
 import { useAcademicLanguage } from "../../context/AcademicLnaguage";
 import type { SelectChangeEvent } from "@mui/material/Select";
 import StudentRow ,   { type UserData } from "./StudentRow";
-
+let listStudent : UserData[] | null = null;
 export default function User() {
   const {teachers} = useAcademicLanguage();
 
@@ -37,11 +37,16 @@ export default function User() {
 
 
   React.useEffect(() => {
-    setLoading(true);
+    if(listStudent){
+      setRows(listStudent);
+      return;
+    }
+
     getStudentsWithTeacherAndReel()
       .then((data) => {
-        
+       listStudent = data as any; 
        setRows((data as any) || [])
+       
       })
       .catch((error) => {
         console.log(error);

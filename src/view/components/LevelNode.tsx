@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getStudentProgressById } from "../../services/subepaseServicese";
+import Loading from "./Loading";
 
 export interface StudentProgressData {
   level_id: string;
@@ -20,25 +21,33 @@ const postionNode= [60,-60];
 export default function LevelNode() {
   const { levelId } = useParams();
   const [dataLevel, setDataLevel] = useState<StudentProgressData[]>([]);
-
+  const [isLoading,setIsLoading]= useState(true); 
   useEffect(() => {
+    setIsLoading(true);
     getStudentProgressById(levelId ?? "")
       .then((data) => {
-        
         setDataLevel(data);
       })
       .catch((error) => {
         console.log(error);
-      });
+      }).finally(()=>{
+        setIsLoading(false);
+      })
   }, [levelId]);
 const getIndexPostion =  (num:number)=>{
   return postionNode[num % postionNode.length ];
 
 }
-
+if(isLoading){
+ return  <Loading />
+  
+}
   return (
+    
     <div className="pt-4 pb-10  w-full flex flex-col items-center gap-2 overflow-x-hidden scroll-smooth">
-      {dataLevel.map((item,idx) => {
+      
+      {
+      dataLevel.length >0 ? dataLevel.map((item,idx) => {
 const currentIndex=getIndexPostion(idx);
 const nextIndex = getIndexPostion(idx+1);
 const postionX = nextIndex- currentIndex ; 
@@ -51,7 +60,7 @@ return (
           <div className="circle">
             <div className="circle-content text-center select-none">
               <h1>{item.tours?.ar_name || item.tours?.name}</h1>
-              <p>{item.progress}%</p>
+              <p>{Math.round(item.progress)}%</p>
               <p>stars: {item.stars}</p>
               <p>{item.is_completed ? "مكتمل ": "غير مكتمل"}</p>
             </div>
@@ -69,11 +78,22 @@ return (
                 />
             </svg>
           </div>
-              }
+           
+         
+             }
         </div>
-  )
+      );
+    })
+    : dataLevel.length==0 &&  <div  className="level-node" >
+          <div className="circle">
+            <div className="circle-content text-center select-none">
+              <h1>No Level Found</h1>
+            </div>
+          </div> 
+  </div>
     }
-      )}
-    </div>
-  );
+
+
+</div>
+);
 }
