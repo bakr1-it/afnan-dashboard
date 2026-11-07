@@ -184,6 +184,9 @@
     .line {
         @apply absolute -z-10 top-1/2 left-1/2 pointer-events-none;
     }
+    .link{
+        @apply text-blue-600
+    }
 }
 
         

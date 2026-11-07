@@ -78,38 +78,44 @@ export async function getStudentsWithTeacherAndReel() {
       is_new_muslim,
       birth_date,
       city,
-      last_reels_id,
+      role,
       created_at,
       teachers (
         id,
         name
-      ),
-      student_level_progress (
-      level_id,
-        progress,
-        stars,
-        is_completed,
-        is_unlocked,
-        tours (
-    name,
-    ar_name,
-    order
-  )
-    ),
-      reels (
-        id,
-        title
       )
-    `);
+    `)
+    .eq("is_accept", true)
+    .order("created_at", { ascending: false });
 
   if (error) {
-    console.error("Error fetching students data:", error.message);
+    console.error("Error fetching students:", error.message);
     throw error;
   }
 
   return data;
 }
+export async function getStudentProgressById(userId: string) {
+  const { data, error } = await supabase
+    .from("student_level_progress")
+    .select(`
+      *,
+      tours (
+        id,
+        name,
+        ar_name,
+        order
+      )
+    `)
+    .eq("user_id", userId);
 
+  if (error) {
+    console.error("Error fetching student progress:", error.message);
+    throw error;
+  }
+
+  return data;
+}
 export async function getTeacherStudentCounts() {
   const { data: teachers, error: tErr } = await supabase
     .from("teachers")
