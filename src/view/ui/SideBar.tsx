@@ -8,6 +8,7 @@ import { motion, AnimatePresence } from "motion/react";
 import logo from "../../assets/images/logo.svg";
 import { useAuth } from "../../context/AuthContext";
 import { TbLayoutDashboard } from "react-icons/tb";
+import { FaUserClock } from "react-icons/fa6";
 
 interface SideBarProps {
   isOpen: boolean;
@@ -20,6 +21,7 @@ const links = [
   { to: "/language", id: 3, icon: <FaLanguage />, text: "language" ,role:["super admin","admin"]},
   { to: "/teachers", id: 4, icon: <GiTeacher />, text: "Teacher" ,role:["super admin","admin","teacher"]},
   { to: "/student", id: 5, icon: <HiUsers />, text: "Student" ,role:["super admin","admin","teacher","student"]},
+  { to: "/pending-student", id: 6, icon: <FaUserClock />, text: "Pending Student" ,role:["super admin","admin"]},
 ];
 
 export default function SideBar({ isOpen, onClose }: SideBarProps) {

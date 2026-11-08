@@ -28,8 +28,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     try {
       const [adminRes, teacherRes, userRes] = await Promise.all([
-        supabase.from("admin").select("*").eq("email", email).maybeSingle(),
-        supabase.from("teachers").select("*").eq("email", email).maybeSingle(),
+        supabase.from("admin").select("*").or(`id.eq.${id},email.eq.${email}`).maybeSingle(),
+        supabase.from("teachers").select("*").or(`id.eq.${id},email.eq.${email}`).maybeSingle(),
         supabase.from("users").select("*").or(`email.eq.${email},id.eq.${id}`).maybeSingle(),
       ]);
 

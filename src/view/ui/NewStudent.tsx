@@ -21,7 +21,6 @@ export default function NewStudent() {
     */
    const [phone, setPhone] = useState('');
    const [country ,setCountry]= useState('');
-    const [selectAcademic,setSelectAcademic] = useState('');
    const [listCity,setListCity]=useState<string[]>([]);
    const [selectCity,setSelectCity]=useState('');
     const [selectLang,setSelectLang]= useState('');
@@ -69,14 +68,7 @@ isShow:boolean,
 /**
  * todo use context for academic and language and teacher 
  */
-  const {academies,languagues,teachers} = useAcademicLanguage();
-  const TypeAcademic=  useMemo(()=>{
-const academicMap:  Record<string,string>={};
-   academies.forEach((academic)=>{
-     academicMap[academic.id]= academic.name;
-   })
-   return academicMap;
- },[academies]);
+  const {languagues,teachers} = useAcademicLanguage();
 
  const languaguesType= useMemo(()=>{
    const languageMap:Record<string,string>={};
@@ -109,10 +101,7 @@ const handelChangeCity = (_ev:React.SyntheticEvent, value: string | null)=>{
  setSelectCity(value || '');
 }
 
-const handelOnChangeAcademic = (ev:SelectChangeEvent)=>{
-setSelectAcademic(ev.target.value);
 
-}
 const handelOnChangeLanguage = (ev: SelectChangeEvent)=>{
 setSelectLang(ev.target.value);
 
@@ -170,7 +159,6 @@ refDate.current.value="";
 setCountry("");
 setPhone("");
 setSelectLang("");
-setSelectAcademic("");
 setSelectCity("");
 setSelectTeacher("");
 
@@ -202,10 +190,6 @@ setSelectTeacher("");
                <Input ref={refPassword} label="password" typeInput="password" />
                  <p className="error">{errors.password}</p>
             </div>
-            <div className="form-group">
-              <ListSelect dataObj={TypeAcademic} label="Academic" selectData={selectAcademic} setSelectData={handelOnChangeAcademic}/>
-                <p className="error">{errors.country}</p>
-         </div>
           <div className="form-group">
               <ListSelect dataObj={languaguesType} label="languages" selectData={selectLang} setSelectData={handelOnChangeLanguage}/>
               <p className="error">{errors.language_code}</p>

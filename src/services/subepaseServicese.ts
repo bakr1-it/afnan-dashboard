@@ -1,12 +1,33 @@
-import { supabase } from "../supabaseClient"
+import { supabase, supabaseSignUp } from "../supabaseClient"
 interface paramType{
     tableName:string,
     payload : Record<string,any>,
 }
 export default async function inserRow({tableName , payload}:paramType){
+  const finalPayload = { ...payload };
+
+  if (payload.email && payload.password) {
+    const { data: authData, error: authError } = await supabaseSignUp.auth.signUp({
+      email: payload.email,
+      password: payload.password,
+      options: {
+        data: {
+          name: payload.name,
+          table: tableName,
+        },
+      },
+    });
+
+    if (authError) throw authError;
+
+    if (authData?.user?.id) {
+      finalPayload.id = authData.user.id;
+    }
+  }
+
 const {error,data} = await supabase
 .from(tableName)
-.insert(payload)
+.insert(finalPayload)
 .select()
 .single();
 if(error) throw error;
@@ -16,10 +37,26 @@ return {data};
 export async function getTable(tableName:string){
     const {error,data} = await supabase
     .from(tableName)
-    .select("*")
+    .select("*");
     if(error) throw error;
     return data;
 }
+export async function getPendingUser() {
+
+        const {error,data} = await supabase
+    .from("users")
+    .select(`
+      id
+      ,name
+      ,email,
+      language_code
+      `).eq("is_accept",false);
+    if(error) throw error;
+    return data;
+    
+  }
+  
+
 export async function getTableTeacher() {
   const { data, error } = await supabase
     .from("teachers")

@@ -1,51 +1,151 @@
-import { useRef, useState, type SyntheticEvent } from "react";
+import React, { useEffect, useMemo, useRef, useState, type SyntheticEvent } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+import type { SelectChangeEvent } from "@mui/material/Select";
+import { PhoneInput } from "react-international-phone";
+import "react-international-phone/style.css";
+import { City } from "country-state-city";
 import Input from "../components/Input";
+import ListSelect from "../components/ListSelect";
+import AutoCompliate from "../components/AutoCompliate";
+import MailFmail from "../components/MailFmail";
+import Checked from "../components/Checked";
 import IconLoad from "../components/IconLoad";
 import AlertSuccess from "../components/AlertSuccess";
+import { listCountryWithIso } from "../constants/country";
 import { vaildatedBeforeSend } from "../../helper";
 import { useAuth } from "../../context/AuthContext";
-import { supabase } from "../../supabaseClient";
+import { useAcademicLanguage } from "../../context/AcademicLnaguage";
 import inserRow from "../../services/subepaseServicese";
+
+interface alertTypeInfo {
+  typeAlert: "success" | "error" | "warning" | "info";
+  message: string;
+  isShow: boolean;
+}
 
 export default function SignIn() {
   const { profile } = useAuth();
   const navigate = useNavigate();
+  const { academies, languagues, refreshTable } = useAcademicLanguage();
+
+  useEffect(() => {
+    refreshTable();
+  }, []);
+
+  const TypeAcademic = useMemo(() => {
+    const academicMap: Record<string, string> = {};
+    academies.forEach((academic) => {
+      academicMap[academic.id] = academic.name;
+    });
+    return academicMap;
+  }, [academies]);
+
+  const languaguesType = useMemo(() => {
+    const languageMap: Record<string, string> = {};
+    languagues.forEach((lang) => {
+      languageMap[lang.code] = lang.name;
+    });
+    return languageMap;
+  }, [languagues]);
+
+  const refName = useRef<HTMLInputElement>(null) as React.RefObject<HTMLInputElement>;
+  const refEmail = useRef<HTMLInputElement>(null) as React.RefObject<HTMLInputElement>;
+  const refPassword = useRef<HTMLInputElement>(null) as React.RefObject<HTMLInputElement>;
+  const refChecked = useRef<HTMLInputElement>(null) as React.RefObject<HTMLInputElement>;
+  const refIsNewMuslim = useRef<HTMLInputElement>(null) as React.RefObject<HTMLInputElement>;
+  const refDate = useRef<HTMLInputElement>(null) as React.RefObject<HTMLInputElement>;
+
+  const [value, setValue] = useState(0);
+  const [phone, setPhone] = useState("");
+  const [country, setCountry] = useState("");
+  const [selectAcademic, setSelectAcademic] = useState("");
+  const [selectLang, setSelectLang] = useState("");
+  const [listCity, setListCity] = useState<string[]>([]);
+  const [selectCity, setSelectCity] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [showAlert, setShowAlert] = useState<alertTypeInfo>({
+    typeAlert: "success",
+    message: "",
+    isShow: false,
+  });
+
+  const [errors, setErros] = useState<Record<string, string | boolean>>({});
 
   if (profile) {
     return <Navigate to="/dashboard" replace />;
   }
 
-  const refName = useRef<HTMLInputElement>(null) as React.RefObject<HTMLInputElement>;
-  const refEmail = useRef<HTMLInputElement>(null) as React.RefObject<HTMLInputElement>;
-  const refPassword = useRef<HTMLInputElement>(null) as React.RefObject<HTMLInputElement>;
+  const handleChange = (_event: React.SyntheticEvent, newValue: number) => {
+    setValue(newValue);
+    setErros({});
+  };
 
-  const [isLoading, setIsLoading] = useState(false);
+  const handelChangecountry = (ev: SelectChangeEvent) => {
+    const iso = ev.target.value;
+    setCountry(iso);
+    setListCity(City.getCitiesOfCountry(iso)?.map((c) => c.name) || []);
+  };
 
-interface alertTypeInfo{
-typeAlert : "success"|"error"|"warning"|"info",
-message:string, 
-isShow:boolean,  
-}
-  const [showAlert, setShowAlert] = useState<alertTypeInfo>({ typeAlert: "success", message: "", isShow: false });
-  
-  
-  const [errors, setErros] = useState<Record<string, string>>({
-    name: "",
-    email: "",
-    password: "",
-  });
+  const handelChangeCity = (_ev: React.SyntheticEvent, val: string | null) => {
+    setSelectCity(val || "");
+  };
+
+  const handelOnChangeAcademic = (ev: SelectChangeEvent) => {
+    setSelectAcademic(ev.target.value);
+  };
+
+  const handelOnChangeLanguage = (ev: SelectChangeEvent) => {
+    setSelectLang(ev.target.value);
+  };
 
   async function handelOnSubmit(ev: SyntheticEvent<HTMLFormElement>) {
     ev.preventDefault();
 
-    const payload = {
+    const basePayload = {
       name: refName.current.value,
       email: refEmail.current.value,
       password: refPassword.current.value,
     };
 
-    const newError = vaildatedBeforeSend(payload as any);
+    let payload: Record<string, any> = basePayload;
+    let tableName = "admin";
+
+    if (value === 1) {
+      tableName = "teachers";
+      payload = {
+        ...basePayload,
+        country: country,
+        language_code: selectLang,
+        is_male: refChecked.current?.checked ?? false,
+        academy_id: selectAcademic,
+        phone: phone,
+      };
+    } else if (value === 2) {
+      tableName = "users";
+      payload = {
+        ...basePayload,
+        country: country,
+        language_code: selectLang,
+        is_new_muslim: refIsNewMuslim.current?.checked ?? false,
+        birth_date: refDate.current?.value ?? "",
+        city: selectCity,
+        is_male: refChecked.current?.checked ?? false,
+        phone_number: phone,
+      };
+    }
+
+    const newError: Record<string, string> = vaildatedBeforeSend(payload);
+
+    if (value === 1 && phone.length <= 7) {
+      newError["phone"] = "Invalid phone number";
+    }
+    if (value === 2 && phone.length <= 7) {
+      newError["phone_number"] = "Invalid phone number";
+    }
+
     setErros(newError);
 
     if (Object.keys(newError).length > 0) {
@@ -55,39 +155,14 @@ isShow:boolean,
     setIsLoading(true);
 
     try {
-      const { data: authData, error: authError } = await supabase.auth.signUp({
-        email: payload.email,
-        password: payload.password,
-        options: {
-          data: {
-            name: payload.name,
-            role: "admin",
-          },
-        },
+      await inserRow({
+        tableName: tableName,
+        payload: payload,
       });
-
-      if (authError) {
-        setShowAlert({ typeAlert: "error", message: authError.message, isShow: true });
-        return;
-      }
-
-      try {
-        await inserRow({
-          tableName: "admin",
-          payload: {
-            name: payload.name,
-            email: payload.email,
-            password: payload.password,
-            ...(authData?.user?.id ? { id: authData.user.id } : {}),
-          },
-        });
-      } catch (dbErr) {
-        console.error("Database insert error:", dbErr);
-      }
 
       setShowAlert({
         typeAlert: "success",
-        message: "Admin account created successfully! Redirecting to login...",
+        message: "Account created successfully! Redirecting to login...",
         isShow: true,
       });
 
@@ -108,10 +183,24 @@ isShow:boolean,
   return (
     <div className="auth-container">
       <div className="title-ui">
-        <h1>Sign In (Admin)</h1>
+        <h1>Sign In</h1>
       </div>
 
-      <form action="" method="post" className="form-auth" onSubmit={handelOnSubmit}>
+      <div className="tabs my-2">
+        <Tabs value={value} onChange={handleChange} aria-label="role tabs">
+          <Tab label="Admin" />
+          <Tab label="Teacher" />
+          <Tab label="Student" />
+        </Tabs>
+      </div>
+
+      <form
+        action=""
+        key={value}
+        method="post"
+        className={value === 0 ? "form-auth" : "form form-create-new-user"}
+        onSubmit={handelOnSubmit}
+      >
         <div className="form-group">
           <Input label="name" ref={refName} />
           <p className="error">{errors.name}</p>
@@ -126,6 +215,82 @@ isShow:boolean,
           <Input label="password" typeInput="password" ref={refPassword} />
           <p className="error">{errors.password}</p>
         </div>
+
+        {(value === 1 ) && (
+          <>
+            <div className="form-group">
+              <ListSelect
+                dataObj={TypeAcademic}
+                label="Academic"
+                selectData={selectAcademic}
+                setSelectData={handelOnChangeAcademic}
+              />
+              <p className="error">{errors.academy_id}</p>
+            </div>
+
+            <div className="form-group">
+              <ListSelect
+                dataObj={languaguesType}
+                label="languages"
+                selectData={selectLang}
+                setSelectData={handelOnChangeLanguage}
+              />
+              <p className="error">{errors.language_code}</p>
+            </div>
+
+            <div className="form-group">
+              <PhoneInput
+                className="input-phone"
+                defaultCountry="eg"
+                value={phone}
+                onChange={(p) => setPhone(p)}
+              />
+              <p className="error">{value === 1 ? errors.phone : errors.phone_number}</p>
+            </div>
+
+            <div className="form-group">
+              <ListSelect
+                dataObj={listCountryWithIso}
+                label="Country"
+                selectData={country}
+                setSelectData={handelChangecountry}
+              />
+              <p className="error">{errors.country}</p>
+            </div>
+          </>
+        )}
+
+        {value === 2 && (
+          <>
+            <div className="form-group">
+              <AutoCompliate
+                disable={country === ""}
+                data={listCity}
+                label="City"
+                selectData={selectCity}
+                setSelectData={handelChangeCity}
+              />
+              <p className="error">{errors.city}</p>
+            </div>
+
+            <div className="form-group">
+              <Input ref={refDate} typeInput="date" />
+              <p className="error">{errors.birth_date}</p>
+            </div>
+          </>
+        )}
+
+        {(value === 1 || value === 2) && (
+          <div className="form-group">
+            <MailFmail refChecked={refChecked} />
+          </div>
+        )}
+
+        {value === 2 && (
+          <div className="form-group">
+            <Checked ref={refIsNewMuslim} label="Is New Muslim" />
+          </div>
+        )}
 
         <div className="button-submit flex justify-between items-center">
           <button className="btn btn-submite" disabled={isLoading}>

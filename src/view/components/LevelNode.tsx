@@ -87,7 +87,7 @@ return (
     : dataLevel.length==0 &&  <div  className="level-node" >
           <div className="circle">
             <div className="circle-content text-center select-none">
-              <h1>No Level Found</h1>
+              <h1>New Student</h1>
             </div>
           </div> 
   </div>

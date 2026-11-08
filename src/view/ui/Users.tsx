@@ -18,6 +18,7 @@ let listStudent : UserData[] | null = null;
 export default function User() {
   const {teachers} = useAcademicLanguage();
 
+
   const teacherList  = React.useMemo(()=>{
     const arr :Record<string,string>={"all":"All"};
     teachers.forEach((t)=>{
@@ -35,13 +36,13 @@ export default function User() {
 
 }
 
-
-  React.useEffect(() => {
-    if(listStudent){
+React.useEffect(() => {
+  
+  if(listStudent){
       setRows(listStudent);
       return;
     }
-
+setLoading(true);
     getStudentsWithTeacherAndReel()
       .then((data) => {
        listStudent = data as any; 
@@ -54,7 +55,8 @@ export default function User() {
       .finally(() => {
         setLoading(false);
       });
-  }, []);
+    }, []);
+   
 const filterrow=  React.useMemo(()=>{
     if(!selectTeacher || selectTeacher=="all")
     return rows;
