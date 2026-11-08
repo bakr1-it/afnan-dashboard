@@ -121,13 +121,32 @@
         }
     }
         .filter-data{
-            @apply flex justify-between items-center px-2 py-2 ;
+            @apply flex justify-between items-center px-1 gap-2 py-2 pb-4 ;
             .list{
-                @apply w-1/5 ;
+                @apply  flex gap-2 max-md:flex-col   max-w-xl w-full;
+                >div{
+                    @apply flex-1
+                }
+                    .filter-student-list{
+                @apply flex gap-0.5;
+                &>:first-child{
+                    @apply !w-36
+                }
+            }
                 p{
                     @apply capitalize text-neutral-header font-semibold border-neutral-muted border-1 my-2 rounded-md inline-block p-2
                 }
             }
+           .new-student{
+            @apply self-end shrink-0 pb-2;
+        }
+         .filter-student-list{
+                @apply flex;
+                select{
+                    @apply bg-amber-400
+                }
+            }
+           
 
         }
         /**todo style for form student*/

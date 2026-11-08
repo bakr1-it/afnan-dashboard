@@ -9,9 +9,10 @@ interface TypeListSelect{
   dataObj?:Record<string,string>,
   dis?:boolean,
   selectData?:string,
+  hidNone?:boolean,
 setSelectData?: (event: SelectChangeEvent) => void;
 }
-export default function ListSelect({data,label,dataObj,dis,selectData='',setSelectData}:TypeListSelect) {
+export default function ListSelect({data,label,dataObj,dis,selectData='',setSelectData,hidNone=false}:TypeListSelect) {
  
   const [open, setOpen] = React.useState(false);
 
@@ -40,9 +41,11 @@ export default function ListSelect({data,label,dataObj,dis,selectData='',setSele
           label="Academic"
           onChange={setSelectData}
         >
+          {!hidNone && 
           <MenuItem value="">
             <em>None</em>
           </MenuItem>
+          }
           
           {data && data.map((d)=><MenuItem value={d}>{d}</MenuItem>)}
       
