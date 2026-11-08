@@ -8,6 +8,8 @@ import Paper from '@mui/material/Paper';
 import { getPendingUser } from '../../services/subepaseServicese';
 import { useEffect, useState } from 'react';
 import Loading from '../components/Loading';
+import { useAuth } from '../../context/AuthContext';
+import {  Navigate } from 'react-router-dom';
  interface UserData {
   id: string;
   name: string;
@@ -44,6 +46,8 @@ export default function StudentNotAccept() {
         })
 
     },[])
+    const {profile} = useAuth();
+  if(!["admin","super admin"].includes(profile?.role))  return  <Navigate to="/dashboard" replace/>;
     
   return (
       <TableContainer component={Paper}>
