@@ -14,6 +14,7 @@ import { useAcademicLanguage } from "../../context/AcademicLnaguage";
 import React, {  useMemo, useRef, useState, type SyntheticEvent } from 'react';
 import Checked from "../components/Checked";
 import type { SelectChangeEvent } from "@mui/material/Select";
+import { clearStudentCache } from "./Users";
 
 export default function NewStudent() {
    /**
@@ -161,6 +162,7 @@ setPhone("");
 setSelectLang("");
 setSelectCity("");
 setSelectTeacher("");
+clearStudentCache();
 
   }).catch((error)=>{
         setShowAlert({typeAlert:"error",message:error.message , isShow:true});

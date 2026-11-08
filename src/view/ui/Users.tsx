@@ -16,12 +16,15 @@ import type { SelectChangeEvent } from "@mui/material/Select";
 import StudentRow ,   { type UserData } from "./StudentRow";
 import Input from "../components/Input";
 let listStudent : UserData[] | null = null;
+export function clearStudentCache(){
+listStudent=null;
+}
 export default function User() {
   const {teachers} = useAcademicLanguage();
 
 
   
-  const [rows, setRows] = React.useState<UserData[]>([]);
+  const [rows, setRows] = React.useState<UserData[]>(listStudent || []);
   const [loading, setLoading] = React.useState(false);
   const [selectTeacher,setSelectTeacer] = React.useState("");
   type choseSelectFilter = "name" | "email";
