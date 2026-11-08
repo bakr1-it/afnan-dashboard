@@ -60,6 +60,7 @@ export default function SignIn() {
   const [value, setValue] = useState(0);
   const [phone, setPhone] = useState("");
   const [country, setCountry] = useState("");
+  const [countryStudent, setCountryStudent] = useState("");
   const [selectAcademic, setSelectAcademic] = useState("");
   const [selectLang, setSelectLang] = useState("");
   const [listCity, setListCity] = useState<string[]>([]);
@@ -84,8 +85,13 @@ export default function SignIn() {
   };
 
   const handelChangecountry = (ev: SelectChangeEvent) => {
+    setCountry(ev.target.value);
+  };
+
+  const handelChangeCountryStudent = (ev: SelectChangeEvent) => {
     const iso = ev.target.value;
-    setCountry(iso);
+    setCountryStudent(iso);
+    setSelectCity("");
     setListCity(City.getCitiesOfCountry(iso)?.map((c) => c.name) || []);
   };
 
@@ -127,13 +133,11 @@ export default function SignIn() {
       tableName = "users";
       payload = {
         ...basePayload,
-        country: country,
-        language_code: selectLang,
+        country: countryStudent,
         is_new_muslim: refIsNewMuslim.current?.checked ?? false,
         birth_date: refDate.current?.value ?? "",
         city: selectCity,
         is_male: refChecked.current?.checked ?? false,
-        phone_number: phone,
       };
     }
 
@@ -141,9 +145,6 @@ export default function SignIn() {
 
     if (value === 1 && phone.length <= 7) {
       newError["phone"] = "Invalid phone number";
-    }
-    if (value === 2 && phone.length <= 7) {
-      newError["phone_number"] = "Invalid phone number";
     }
 
     setErros(newError);
@@ -263,8 +264,18 @@ export default function SignIn() {
         {value === 2 && (
           <>
             <div className="form-group">
+              <ListSelect
+                dataObj={listCountryWithIso}
+                label="Country"
+                selectData={countryStudent}
+                setSelectData={handelChangeCountryStudent}
+              />
+              <p className="error">{errors.country}</p>
+            </div>
+
+            <div className="form-group">
               <AutoCompliate
-                disable={country === ""}
+                disable={countryStudent === ""}
                 data={listCity}
                 label="City"
                 selectData={selectCity}
