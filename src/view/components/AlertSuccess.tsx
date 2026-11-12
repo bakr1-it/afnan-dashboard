@@ -23,6 +23,7 @@ return ()=>clearTimeout(time);
         
                 {isShow ? (
                     <motion.div
+                    style={{zIndex:9999}}
                      className="container-alert-success"
           initial={{ opacity: 0, x: "50%" }}
           animate={{ opacity: 1, x: 0 }}

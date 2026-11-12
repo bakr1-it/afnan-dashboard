@@ -83,7 +83,7 @@ return (
  </div>
 {(profile?.role=="admin" || profile?.role=="super admin" )&& (
               <div className="filter-data">
-                 <div className="list">
+                 <div className="list flex flex-col">
                   <p>select teacher for academic</p>
              <ListSelect dataObj={TypeAcademic} selectData={selectAcademic} setSelectData={handelOnChangeAcademic}/>
      

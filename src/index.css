@@ -171,7 +171,7 @@
             @apply text-red-600 font-semibold ms-1 text-xs
         }
         .container-alert-success{
-            @apply absolute -top-8 right-4 z-40;
+            @apply fixed top-20 right-4 z-40;
        
         }
         .container-loading{
@@ -205,6 +205,9 @@
     }
     .link{
         @apply text-blue-600
+    }
+    .cancel{
+        @apply bg-tertiary p-2 rounded-md font-semibold cursor-pointer
     }
 }
 

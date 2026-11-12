@@ -179,3 +179,18 @@ export async function getTeacherStudentCounts() {
   }));
 }
 
+
+export async function updateUserToAccept (id:string, teacherId?:string){
+  const payload : Record <string,string|boolean>={is_accept:true};
+  if(!id) return;
+  if(teacherId)
+    payload["teacher_id"]=teacherId;
+  const { data, error } = await supabase
+    .from("users").update(payload).eq("id",id).select().single();
+    if(error)
+      throw error;
+    return data;
+
+    
+}
+

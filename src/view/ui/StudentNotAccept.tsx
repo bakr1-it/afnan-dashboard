@@ -6,10 +6,16 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { getPendingUser } from '../../services/subepaseServicese';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import Loading from '../components/Loading';
 import { useAuth } from '../../context/AuthContext';
 import {  Navigate } from 'react-router-dom';
+import { updateUserToAccept } from '../../services/subepaseServicese';
+import { useAcademicLanguage } from '../../context/AcademicLnaguage';
+import Modal from '../components/Modal';
+import ListSelect from '../components/ListSelect';
+import type { SelectChangeEvent } from '@mui/material/Select';
+import AlertSuccess from '../components/AlertSuccess';
  interface UserData {
   id: string;
   name: string;
@@ -18,23 +24,50 @@ import {  Navigate } from 'react-router-dom';
 
 
 }
+interface alertTypeInfo{
+typeAlert : "success"|"error"|"warning"|"info",
+message:string, 
+isShow:boolean,  
+}
+
 let pendingStudent: UserData[] | null= null;
+
+
 export default function StudentNotAccept() {
-    const [loading,setLoading]=useState(true);
+const {teachers}= useAcademicLanguage();
+  const [showAlert,setShowAlert]= useState<alertTypeInfo>({typeAlert:"success",message:"",isShow:false});
+
+
+const listTeacher= useMemo(()=>{
+
+const arr:Record<string,string> ={};
+teachers.forEach(t=> arr[t.id] = t.name);
+return arr;
+
+},[teachers]);
+
+  const [loading,setLoading]=useState(true);
+  const [isShowModal,setIsShowModal]= useState(false);
     const [rows,setRows]= useState<UserData[]>([]);
+    const [selectTeacher,setSelectTeacher]= useState('');
+    const [confirmIsShowModal,setConfirmIsShowModal]=useState(false);
+    const idRef= useRef("");
+
+
 
     useEffect(()=>{
         if(pendingStudent){
-            debugger;
-            return setRows(pendingStudent);
+          setRows(pendingStudent);
+          setLoading(false);
+
+            return 
         }
         setLoading(true);
         getPendingUser()
         .then((data)=>{
-            debugger;
             pendingStudent=data;
             setRows(data);
-            console.log("done data");
+
             
         })
         .catch((error)=>{
@@ -46,19 +79,80 @@ export default function StudentNotAccept() {
         })
 
     },[])
+
     const {profile} = useAuth();
   if(!["admin","super admin"].includes(profile?.role))  return  <Navigate to="/dashboard" replace/>;
     
+  const handelShowModal= (id:string)=>{
+    console.log("show modal ");
+    setIsShowModal(true);
+    idRef.current=id;
+  }
+  const handelIsHideModal = ()=>{
+    setIsShowModal(false);
+    setSelectTeacher('');
+    idRef.current="";
+
+  }
+  const handelOnCloseConfirmModal =()=>{
+    setConfirmIsShowModal(false);
+  }
+  const handelOnChangeTeacher = (ev:SelectChangeEvent)=>{
+  setSelectTeacher(ev.target.value);
+}
+
+const handelChangeAcceptUserWithTeacher = ()=>{
+  if(selectTeacher.trim()==""){
+    setConfirmIsShowModal(true);
+    return;
+  }
+  updateUserToAccept(idRef.current ,selectTeacher)
+  .then((data)=>{
+  setShowAlert({typeAlert:"success",  message: ' student '+' ' +data.name + ' has been Accepted' , isShow:true});  
+
+setRows((prev)=>prev.filter(row=>row.id !==data.id));
+setIsShowModal(false);
+setSelectTeacher("");
+idRef.current="";
+}).catch((error)=>{
+         setShowAlert({typeAlert:"error",message:error.message , isShow:true});
+
+    console.log(error);
+
+  })
+  
+}
+const handelChangeAcceptUser = ()=>{
+  updateUserToAccept(idRef.current )
+  .then((data)=>{
+  setShowAlert({typeAlert:"success",  message: ' student '+' ' +data.name + ' has been Accepted' , isShow:true});  
+
+setRows((prev)=>prev.filter(row=>row.id !==data.id));
+setIsShowModal(false);
+setConfirmIsShowModal(false);
+setSelectTeacher("");
+idRef.current="";
+
+}).catch((error)=>{
+         setShowAlert({typeAlert:"error",message:error.message , isShow:true});
+    console.log(error);
+
+  })
+  
+}
+
+
+
   return (
       <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell align="right">Id</TableCell>
-            <TableCell align="right">Name</TableCell>
-            <TableCell align="right">Email</TableCell>
-            <TableCell align="right">Lnaguage</TableCell>
-            <TableCell align="right">Action</TableCell>
+            <TableCell align="left">Id</TableCell>
+            <TableCell align="left">Name</TableCell>
+            <TableCell align="left">Email</TableCell>
+            <TableCell align="left">Lnaguage</TableCell>
+            <TableCell align="left">Action</TableCell>
           </TableRow>
         </TableHead>
             {!loading ?
@@ -69,11 +163,22 @@ export default function StudentNotAccept() {
          sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
          >
      
-              <TableCell align="right">{row.id}</TableCell>
-              <TableCell align="right">{row.name}</TableCell>
-              <TableCell align="right">{row.name}</TableCell>
-              <TableCell align="right">{row.language_code}</TableCell>
-              <TableCell align="right">Action</TableCell>
+              <TableCell align="left">{row.id}</TableCell>
+              <TableCell align="left">{row.name}</TableCell>
+              <TableCell align="left">{row.email}</TableCell>
+              <TableCell align="left">{row.language_code}</TableCell>
+              <TableCell align="left">
+                <button className='btn btn-accept-student text-white p-1' onClick={()=>handelShowModal(row.id)} >
+                <svg xmlns="http://www.w3.org/2000/svg"
+                 viewBox="0 0 24 24"
+                  fill="white" 
+                  className="size-6">
+                <path fillRule="evenodd" 
+                d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z"
+                 clipRule="evenodd" />
+                </svg>
+
+                </button> </TableCell>
             </TableRow>
                 )) :
                          <TableRow
@@ -107,6 +212,35 @@ export default function StudentNotAccept() {
              </TableBody>
     }
       </Table>
+      {isShowModal && <Modal open={isShowModal} onClose={handelIsHideModal} width={600}> 
+        <div className=''>
+        <p>Select Teacher</p>
+        <ListSelect dataObj={listTeacher} selectData={selectTeacher} setSelectData={handelOnChangeTeacher} />
+        <button className='btn mt-4' onClick={handelChangeAcceptUserWithTeacher}>
+          Accept
+
+        </button>
+
+        
+        </div>
+        
+         </Modal>}
+         {confirmIsShowModal && <Modal width={600} open={confirmIsShowModal} onClose={handelOnCloseConfirmModal}>
+          <div className='space-y-6 space-x-4'>
+            <p className='text-center'>Accept Student with out Teacher</p>
+          <button className='btn' onClick={handelChangeAcceptUser}>
+            Accept
+
+          </button>
+          <button className='cancel' onClick={handelOnCloseConfirmModal}>
+            Cancel
+            
+          </button>
+          </div>
+          
+          </Modal>}
+                  <AlertSuccess type={showAlert.typeAlert} message={showAlert.message} isShow={showAlert.isShow} onClose={()=> setShowAlert((prev)=>({...prev , isShow:false}))}/>
+          
     </TableContainer>
   )
 }
