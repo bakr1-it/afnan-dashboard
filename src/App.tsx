@@ -1,7 +1,7 @@
 import { Navigate, Outlet } from "react-router-dom"
 import SideBar from "./view/ui/SideBar"
 import { HiOutlineMenuAlt2 } from "react-icons/hi";
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import DropDown from "./view/ui/DropDown";
 import { useAuth } from "./context/AuthContext";
 import Loading from "./view/components/Loading";
