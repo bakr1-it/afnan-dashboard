@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 import { getStudentsWithTeacherAndReel } from "../../services/subepaseServicese";
 import ListSelect from "../components/ListSelect";
 import Loading from "../components/Loading";
+import { useAuth } from '../../context/AuthContext';
 
 import { useAcademicLanguage } from "../../context/AcademicLnaguage";
 import type { SelectChangeEvent } from "@mui/material/Select";
@@ -52,7 +53,7 @@ React.useEffect(() => {
       return;
     }
 setLoading(true);
-    getStudentsWithTeacherAndReel()
+      getStudentsWithTeacherAndReel(profile?.role =="teacher" ? profile?.id:null)
       .then((data) => {
        listStudent = data as any; 
        setRows((data as any) || [])
@@ -85,7 +86,8 @@ const filterrow=  React.useMemo(()=>{
     return rows;
   return rows.filter((row)=>row.teacher_id == selectTeacher);
 },[rows,selectTeacher,searchInputState])
-
+    const {profile} = useAuth();
+   
   return (
     <>
       <div className="title-ui">
@@ -93,10 +95,13 @@ const filterrow=  React.useMemo(()=>{
       </div>
       <div className="filter-data">
         <div className="list">
+        {["admin","super admin"].includes(profile?.role) && 
          <div className="teacher">
            <p>select student for teacher</p>
           <ListSelect dataObj={teacherList} selectData={selectTeacher} setSelectData={handelOnChangeTeacher} />
          </div>
+        }
+        {profile?.role !=="student" && 
          <div className="filter-studnet">
                <p>select student</p>
                <div className="filter-student-list">
@@ -105,12 +110,15 @@ const filterrow=  React.useMemo(()=>{
            <Input value={searchInputState} setStateValue={handelOnChangeFilter} />
                </div>
          </div>
+        }
         </div>
+        {profile?.role !== "student" && 
         <div className="new-student">
           <Link to="/newStudent" className="btn">
             New Student
           </Link>
         </div>
+        }
       </div>
       <TableContainer component={Paper} elevation={1} sx={{ borderRadius: 2 }}>
         <Table aria-label="collapsible table">

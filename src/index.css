@@ -105,7 +105,7 @@
     }
     /**todo style for outlet */
     .outlet{
-        @apply  min-h-screen relative;
+        @apply  min-h-screen relative mb-10;
     }
     /**todo style for user */ 
     .container-user-info{

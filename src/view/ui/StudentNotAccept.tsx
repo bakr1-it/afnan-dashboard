@@ -16,6 +16,7 @@ import Modal from '../components/Modal';
 import ListSelect from '../components/ListSelect';
 import type { SelectChangeEvent } from '@mui/material/Select';
 import AlertSuccess from '../components/AlertSuccess';
+import { clearStudentCache } from './Users';
  interface UserData {
   id: string;
   name: string;
@@ -109,7 +110,7 @@ const handelChangeAcceptUserWithTeacher = ()=>{
   updateUserToAccept(idRef.current ,selectTeacher)
   .then((data)=>{
   setShowAlert({typeAlert:"success",  message: ' student '+' ' +data.name + ' has been Accepted' , isShow:true});  
-
+clearStudentCache();
 setRows((prev)=>prev.filter(row=>row.id !==data.id));
 setIsShowModal(false);
 setSelectTeacher("");
@@ -126,7 +127,7 @@ const handelChangeAcceptUser = ()=>{
   updateUserToAccept(idRef.current )
   .then((data)=>{
   setShowAlert({typeAlert:"success",  message: ' student '+' ' +data.name + ' has been Accepted' , isShow:true});  
-
+clearStudentCache();
 setRows((prev)=>prev.filter(row=>row.id !==data.id));
 setIsShowModal(false);
 setConfirmIsShowModal(false);

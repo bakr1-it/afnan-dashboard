@@ -100,8 +100,8 @@ export async function getRowCount(tableName: string) {
 
   return count ?? 0;
 }
-export async function getStudentsWithTeacherAndReel() {
-  const { data, error } = await supabase
+export async function getStudentsWithTeacherAndReel(teacherId?: string) {
+  let query = supabase
     .from("users")
     .select(`
       id,
@@ -124,6 +124,12 @@ export async function getStudentsWithTeacherAndReel() {
     `)
     .eq("is_accept", true)
     .order("created_at", { ascending: false });
+
+  if (teacherId) {
+    query = query.eq("teacher_id", teacherId);
+  }
+
+  const { data, error } = await query;
 
   if (error) {
     console.error("Error fetching students:", error.message);

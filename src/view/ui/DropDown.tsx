@@ -10,6 +10,7 @@ import Tooltip from '@mui/material/Tooltip';
 import {  MdLogout } from "react-icons/md";
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { clearStudentCache } from './Users';
 
 export default function DropDown() {
   const {signOut,profile} = useAuth();
@@ -18,6 +19,7 @@ export default function DropDown() {
 try{
   await signOut();
   Navigate("/login",{replace:true});
+clearStudentCache();
  
   
   
@@ -89,6 +91,13 @@ try{
       >
         <MenuItem onClick={handleClose}>
           <Avatar /> Profile
+        </MenuItem>
+        <Divider />
+        <MenuItem  onClick={handelLogOut}>
+          <ListItemIcon>
+            <MdLogout fontSize="small" />
+          </ListItemIcon>
+          Lang
         </MenuItem>
         <Divider />
         <MenuItem  onClick={handelLogOut}>

@@ -19,7 +19,7 @@ const links = [
   { to: "/dashboard", id: 1, icon: <TbLayoutDashboard />, text: "Dashboard",role:["super admin","admin","teacher","student"]},
   { to: "/academic", id: 2, icon: <FaSchool />, text: "Academic" ,role:["super admin"]},
   { to: "/language", id: 3, icon: <FaLanguage />, text: "language" ,role:["super admin","admin"]},
-  { to: "/teachers", id: 4, icon: <GiTeacher />, text: "Teacher" ,role:["super admin","admin","teacher"]},
+  { to: "/teachers", id: 4, icon: <GiTeacher />, text: "Teacher" ,role:["super admin","admin"]},
   { to: "/student", id: 5, icon: <HiUsers />, text: "Student" ,role:["super admin","admin","teacher","student"]},
   { to: "/pending-student", id: 6, icon: <FaUserClock />, text: "Pending Student" ,role:["super admin","admin"]},
 ];
