@@ -18,6 +18,7 @@ import { vaildatedBeforeSend } from "../../helper";
 import { useAuth } from "../../context/AuthContext";
 import { useAcademicLanguage } from "../../context/AcademicLnaguage";
 import inserRow from "../../services/subepaseServicese";
+import {useLanguageContext} from "../../context/LanguageContext";
 
 interface alertTypeInfo {
   typeAlert: "success" | "error" | "warning" | "info";
@@ -26,6 +27,7 @@ interface alertTypeInfo {
 }
 
 export default function SignIn() {
+  const {t}= useLanguageContext();
   const { profile } = useAuth();
   const navigate = useNavigate();
   const { academies, languagues, refreshTable } = useAcademicLanguage();
