@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getStudentProgressById } from "../../services/subepaseServicese";
 import Loading from "./Loading";
+import { useLanguageContext } from "../../context/LanguageContext";
 
 export interface StudentProgressData {
   level_id: string;
@@ -20,6 +21,7 @@ export interface StudentProgressData {
 const postionNode= [60,-60];
 export default function LevelNode() {
   const { levelId } = useParams();
+  const { t } = useLanguageContext();
   const [dataLevel, setDataLevel] = useState<StudentProgressData[]>([]);
   const [isLoading,setIsLoading]= useState(true); 
   useEffect(() => {
@@ -61,8 +63,8 @@ return (
             <div className="circle-content text-center select-none">
               <h1>{item.tours?.ar_name || item.tours?.name}</h1>
               <p>{Math.round(item.progress)}%</p>
-              <p>stars: {item.stars}</p>
-              <p>{item.is_completed ? "مكتمل ": "غير مكتمل"}</p>
+              <p>{t("stars")}: {item.stars}</p>
+              <p>{item.is_completed ? t("completed") : t("notCompleted")}</p>
             </div>
           </div>
 
@@ -87,7 +89,7 @@ return (
     : dataLevel.length==0 &&  <div  className="level-node" >
           <div className="circle">
             <div className="circle-content text-center select-none">
-              <h1>New Student</h1>
+              <h1>{t("newStudent")}</h1>
             </div>
           </div> 
   </div>

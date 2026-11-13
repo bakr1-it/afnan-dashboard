@@ -7,13 +7,15 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-import {  MdLogout } from "react-icons/md";
+import {  MdLogout, MdLanguage } from "react-icons/md";
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { clearStudentCache } from './Users';
+import { useLanguageContext } from '../../context/LanguageContext';
 
 export default function DropDown() {
   const {signOut,profile} = useAuth();
+  const {t, toggleChangeLnaguage} = useLanguageContext();
   const  Navigate = useNavigate();
   const handelLogOut = async ()=>{
 try{
@@ -39,7 +41,7 @@ clearStudentCache();
   return (
     <React.Fragment>
       <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
-        <Tooltip title="Account settings">
+        <Tooltip title={t("accountSettings")}>
           <IconButton
             onClick={handleClick}
             size="small"
@@ -90,21 +92,21 @@ clearStudentCache();
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
         <MenuItem onClick={handleClose}>
-          <Avatar /> Profile
+          <Avatar className="navbarAvatar" /> <p className='rtl:mx-2'>{t("profile")}</p>
+        </MenuItem>
+        <Divider />
+        <MenuItem  onClick={toggleChangeLnaguage}>
+          <ListItemIcon>
+            <MdLanguage fontSize="small" />
+          </ListItemIcon>
+          {t("lang")}
         </MenuItem>
         <Divider />
         <MenuItem  onClick={handelLogOut}>
           <ListItemIcon>
             <MdLogout fontSize="small" />
           </ListItemIcon>
-          Lang
-        </MenuItem>
-        <Divider />
-        <MenuItem  onClick={handelLogOut}>
-          <ListItemIcon>
-            <MdLogout fontSize="small" />
-          </ListItemIcon>
-          Logout
+          {t("logout")}
         </MenuItem>
       </Menu>
     </React.Fragment>

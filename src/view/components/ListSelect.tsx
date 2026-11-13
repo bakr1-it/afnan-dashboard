@@ -3,6 +3,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { type SelectChangeEvent } from '@mui/material/Select';
+import { useLanguageContext } from '../../context/LanguageContext';
 interface TypeListSelect{
   data?:Array<string>;
   label?:string,
@@ -13,7 +14,7 @@ interface TypeListSelect{
 setSelectData?: (event: SelectChangeEvent) => void;
 }
 export default function ListSelect({data,label,dataObj,dis,selectData='',setSelectData,hidNone=false}:TypeListSelect) {
- 
+  const { t } = useLanguageContext();
   const [open, setOpen] = React.useState(false);
 
 
@@ -43,7 +44,7 @@ export default function ListSelect({data,label,dataObj,dis,selectData='',setSele
         >
           {!hidNone && 
           <MenuItem value="">
-            <em>None</em>
+            <em>{t("none")}</em>
           </MenuItem>
           }
           

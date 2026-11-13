@@ -15,8 +15,10 @@ import React, {  useMemo, useRef, useState, type SyntheticEvent } from 'react';
 import Checked from "../components/Checked";
 import type { SelectChangeEvent } from "@mui/material/Select";
 import { clearStudentCache } from "./Users";
+import { useLanguageContext } from "../../context/LanguageContext";
 
 export default function NewStudent() {
+   const { t } = useLanguageContext();
    /**
     * todo use state for form 
     */
@@ -138,7 +140,7 @@ newError = vaildatedBeforeSend(payload);
 
 
 if(payload.phone_number.length <=7){
-  newError["phone_number"]="Invalid phone number";
+  newError["phone_number"]=t("invalidPhoneNumber");
 }
   setErros(newError);
   
@@ -152,7 +154,7 @@ if(payload.phone_number.length <=7){
 
   inserRow({tableName:"users",payload:payload})
   .then((data)=>{
-        setShowAlert({typeAlert:"success",  message: ' student '+' ' +data.data.name + 'created has been success' , isShow:true});  
+        setShowAlert({typeAlert:"success",  message: t("student") + ' ' + data.data.name + ' ' + t("createdSuccess") , isShow:true});  
 refName.current.value="";
 refEmail.current.value="";
 refPassword.current.value="";
@@ -177,27 +179,27 @@ clearStudentCache();
    return (
       <>
          <div className="title-ui">
-  <h1>Create New Student</h1>
+  <h1>{t("createNewStudent")}</h1>
  </div>
         <form action="" method="post" className="form form-create-new-user" onSubmit={handelOnSubmit}>
             <div className="form-group">
-               <Input ref={refName} label="name"/>
+               <Input ref={refName} label={t("name")}/>
                  <p className="error">{errors.name}</p>
             </div>
             <div className="form-group">
-               <Input ref={refEmail} label="email" typeInput="email"/>
+               <Input ref={refEmail} label={t("email")} typeInput="email"/>
                  <p className="error">{errors.email}</p>
             </div>
             <div className="form-group">
-               <Input ref={refPassword} label="password" typeInput="password" />
+               <Input ref={refPassword} label={t("password")} typeInput="password" />
                  <p className="error">{errors.password}</p>
             </div>
           <div className="form-group">
-              <ListSelect dataObj={languaguesType} label="languages" selectData={selectLang} setSelectData={handelOnChangeLanguage}/>
+              <ListSelect dataObj={languaguesType} label={t("languages")} selectData={selectLang} setSelectData={handelOnChangeLanguage}/>
               <p className="error">{errors.language_code}</p>
             </div>
                    <div className="form-group">
-              <ListSelect dataObj={teachersType} label="Teacher" selectData={selectTeacher} setSelectData={handelOnChangeTeacher}/>
+              <ListSelect dataObj={teachersType} label={t("teacher")} selectData={selectTeacher} setSelectData={handelOnChangeTeacher}/>
               <p className="error">{errors.teacher_id}</p>
             </div>
             <div className="form-group">
@@ -212,12 +214,12 @@ clearStudentCache();
 
             </div>
             <div className="form-group">
-              <ListSelect dataObj={listCountryWithIso} label="Country" selectData={country} setSelectData={handelChangecountry}/>
+              <ListSelect dataObj={listCountryWithIso} label={t("country")} selectData={country} setSelectData={handelChangecountry}/>
                 <p className="error">{errors.country}</p>
           
             </div>
             <div className="form-group">
-              <AutoCompliate disable={country==""} data={listCity} label="City" selectData={selectCity} setSelectData={handelChangeCity}/>
+              <AutoCompliate disable={country==""} data={listCity} label={t("city")} selectData={selectCity} setSelectData={handelChangeCity}/>
                 <p className="error">{errors.city}</p>
            
             </div>
@@ -231,12 +233,12 @@ clearStudentCache();
                 <p className="error">{errors.is_mail}</p>
             </div>
             <div className="form-group">
-                <Checked ref={refIsNewMuslim} label="Is New Muslim"/>
+                <Checked ref={refIsNewMuslim} label={t("isNewMuslim")}/>
             </div>
             
 
                    <div className="button-submit">
-  <button className="btn btn-submite" disabled={isLoading} > {isLoading? <IconLoad />  :"create"}</button>
+  <button className="btn btn-submite" disabled={isLoading} > {isLoading? <IconLoad />  :t("create")}</button>
   </div>
             
         <AlertSuccess type={showAlert.typeAlert} message={showAlert.message} isShow={showAlert.isShow} onClose={()=> setShowAlert((prev)=>({...prev , isShow:false}))}/>

@@ -13,6 +13,7 @@ import Loading from '../components/Loading';
 import { useAcademicLanguage } from '../../context/AcademicLnaguage'; 
 import { useAuth } from '../../context/AuthContext';
 import type { SelectChangeEvent } from '@mui/material/Select';
+import { useLanguageContext } from '../../context/LanguageContext';
 
 interface Teacher {
   id: string;
@@ -35,16 +36,17 @@ export default function Teachers() {
   const [loading,setLoading]= useState(false);
   const [selectAcademic,setSelectAcademic]= useState("");
   const {academies}= useAcademicLanguage();
+  const {t} = useLanguageContext();
 
     const TypeAcademic=  useMemo(()=>{
   const academicMap:  Record<string,string>={};
-     academicMap["all"]= "All";
+     academicMap["all"]= t("all");
      academies.forEach((academic)=>{
        academicMap[academic.id]= academic.name;
      })
   
      return academicMap;
-   },[academies]);
+   },[academies, t]);
   
   
   const filterTeacherForAcademic = useMemo(()=>{
@@ -79,17 +81,17 @@ export default function Teachers() {
 return (
   <>
        <div className="title-ui">
-  <h1>All Teacher</h1>
+  <h1>{t("allTeacher")}</h1>
  </div>
 {(profile?.role=="admin" || profile?.role=="super admin" )&& (
               <div className="filter-data">
                  <div className="list flex flex-col">
-                  <p>select teacher for academic</p>
+                  <p>{t("selectTeacherForAcademic")}</p>
              <ListSelect dataObj={TypeAcademic} selectData={selectAcademic} setSelectData={handelOnChangeAcademic}/>
      
                  </div>
                  <div className="new-student">
-                <Link to="/newTeacher" className="btn">New Teacher</Link>  
+                <Link to="/newTeacher" className="btn">{t("newTeacher")}</Link>  
      
                  </div>
                  </div>
@@ -99,11 +101,11 @@ return (
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell align="left">Name</TableCell>
-            <TableCell align="left">Email</TableCell>
-            <TableCell align="left">Phone</TableCell>
-            <TableCell align="left">Country</TableCell>
-            <TableCell align="left">Academic </TableCell>
+            <TableCell align="left">{t("name")}</TableCell>
+            <TableCell align="left">{t("email")}</TableCell>
+            <TableCell align="left">{t("phone")}</TableCell>
+            <TableCell align="left">{t("country")}</TableCell>
+            <TableCell align="left">{t("academic")}</TableCell>
           </TableRow>
         </TableHead>
         {loading 

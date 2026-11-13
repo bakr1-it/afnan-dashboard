@@ -4,6 +4,7 @@ import { type LocalsKey, type LocalsLangKey , locals } from "../view/constants/l
 type PropsTypeLanguageContext = {
 t:(text:LocalsLangKey)=>string;
 toggleChangeLnaguage:()=>void;
+language:LocalsKey;
 
 }
 
@@ -20,7 +21,7 @@ localStorage.setItem("lang",language);
 
 const t=(text:LocalsLangKey)=>(locals[language] )?.[text] ?? text;
 return (
-    <LnaguageContext.Provider value={{t,toggleChangeLnaguage}}>
+    <LnaguageContext.Provider value={{t,toggleChangeLnaguage,language}}>
         {children}
 
     </LnaguageContext.Provider>

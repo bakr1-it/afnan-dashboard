@@ -1,4 +1,28 @@
 @import "tailwindcss";
+
+  [dir="rtl"] .MuiInputLabel-root {
+  right: 14px !important;
+  left: auto !important;
+  transform-origin: top right !important;
+}
+  [dir="rtl"] .navbarAvatar {
+transform: translateX(14px);
+}
+
+[dir="rtl"] .MuiInputLabel-shrink {
+  transform: translate(0px, -9px) scale(0.75) !important;
+}
+
+[dir="rtl"] .MuiInputLabel-sizeSmall:not(.MuiInputLabel-shrink) {
+  transform: translate(0px, 9px) scale(1) !important;
+}
+
+[dir="rtl"] .MuiSelect-icon,
+[dir="rtl"] .MuiAutocomplete-endAdornment {
+  right: auto !important;
+  left: 7px !important;
+}
+
 @theme {
   --color-primary: #0D9488;
   --color-primary-hover: #0F766E;

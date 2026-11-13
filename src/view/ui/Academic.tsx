@@ -9,21 +9,23 @@ import Paper from '@mui/material/Paper';
 import { Link, Navigate } from 'react-router-dom';
 import { useAcademicLanguage } from '../../context/AcademicLnaguage';
 import { useAuth } from '../../context/AuthContext';
+import { useLanguageContext } from '../../context/LanguageContext';
 
 
 export default function Academic() {
 
 const {academies} = useAcademicLanguage();
   const {profile} = useAuth();
+  const {t} = useLanguageContext();
   if(profile?.role !== "super admin" )  return <Navigate to="/dashboard" replace/>;
  return (
  <>
 <div className="container-header-academies container-components">
  <div className="title-ui">
-  <h1>Academic</h1>
+  <h1>{t("academic")}</h1>
 
  </div>
-       <Link to="/NewAcademic" className="btn">New Academic </Link> 
+       <Link to="/NewAcademic" className="btn">{t("newAcademic")}</Link> 
 </div>
     
           
@@ -31,9 +33,9 @@ const {academies} = useAcademicLanguage();
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell align="left">Name</TableCell>
-            <TableCell align="left">email</TableCell>
-            <TableCell align="left">Action</TableCell>
+            <TableCell align="left">{t("name")}</TableCell>
+            <TableCell align="left">{t("email")}</TableCell>
+            <TableCell align="left">{t("action")}</TableCell>
           </TableRow>
         </TableHead>
 

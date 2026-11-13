@@ -17,6 +17,7 @@ import ListSelect from '../components/ListSelect';
 import type { SelectChangeEvent } from '@mui/material/Select';
 import AlertSuccess from '../components/AlertSuccess';
 import { clearStudentCache } from './Users';
+import { useLanguageContext } from '../../context/LanguageContext';
  interface UserData {
   id: string;
   name: string;
@@ -36,6 +37,7 @@ let pendingStudent: UserData[] | null= null;
 
 export default function StudentNotAccept() {
 const {teachers}= useAcademicLanguage();
+  const {t} = useLanguageContext();
   const [showAlert,setShowAlert]= useState<alertTypeInfo>({typeAlert:"success",message:"",isShow:false});
 
 
@@ -109,7 +111,7 @@ const handelChangeAcceptUserWithTeacher = ()=>{
   }
   updateUserToAccept(idRef.current ,selectTeacher)
   .then((data)=>{
-  setShowAlert({typeAlert:"success",  message: ' student '+' ' +data.name + ' has been Accepted' , isShow:true});  
+  setShowAlert({typeAlert:"success",  message: t("student") + ' ' + data.name + ' ' + t("studentAcceptedSuccess") , isShow:true});  
 clearStudentCache();
 setRows((prev)=>prev.filter(row=>row.id !==data.id));
 setIsShowModal(false);
@@ -126,7 +128,7 @@ idRef.current="";
 const handelChangeAcceptUser = ()=>{
   updateUserToAccept(idRef.current )
   .then((data)=>{
-  setShowAlert({typeAlert:"success",  message: ' student '+' ' +data.name + ' has been Accepted' , isShow:true});  
+  setShowAlert({typeAlert:"success",  message: t("student") + ' ' + data.name + ' ' + t("studentAcceptedSuccess") , isShow:true});  
 clearStudentCache();
 setRows((prev)=>prev.filter(row=>row.id !==data.id));
 setIsShowModal(false);
@@ -149,11 +151,11 @@ idRef.current="";
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell align="left">Id</TableCell>
-            <TableCell align="left">Name</TableCell>
-            <TableCell align="left">Email</TableCell>
-            <TableCell align="left">Lnaguage</TableCell>
-            <TableCell align="left">Action</TableCell>
+            <TableCell align="left">{t("id")}</TableCell>
+            <TableCell align="left">{t("name")}</TableCell>
+            <TableCell align="left">{t("email")}</TableCell>
+            <TableCell align="left">{t("language")}</TableCell>
+            <TableCell align="left">{t("action")}</TableCell>
           </TableRow>
         </TableHead>
             {!loading ?
@@ -187,7 +189,7 @@ idRef.current="";
          sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
          >
      
-              <TableCell align="right" colSpan={5}>no Pending Student</TableCell>
+              <TableCell align="right" colSpan={5}>{t("noPendingStudent")}</TableCell>
          
             </TableRow>
                 }
@@ -215,10 +217,10 @@ idRef.current="";
       </Table>
       {isShowModal && <Modal open={isShowModal} onClose={handelIsHideModal} width={600}> 
         <div className=''>
-        <p>Select Teacher</p>
+        <p>{t("selectTeacher")}</p>
         <ListSelect dataObj={listTeacher} selectData={selectTeacher} setSelectData={handelOnChangeTeacher} />
         <button className='btn mt-4' onClick={handelChangeAcceptUserWithTeacher}>
-          Accept
+          {t("accept")}
 
         </button>
 
@@ -228,13 +230,13 @@ idRef.current="";
          </Modal>}
          {confirmIsShowModal && <Modal width={600} open={confirmIsShowModal} onClose={handelOnCloseConfirmModal}>
           <div className='space-y-6 space-x-4'>
-            <p className='text-center'>Accept Student with out Teacher</p>
+            <p className='text-center'>{t("acceptStudentWithoutTeacher")}</p>
           <button className='btn' onClick={handelChangeAcceptUser}>
-            Accept
+            {t("accept")}
 
           </button>
           <button className='cancel' onClick={handelOnCloseConfirmModal}>
-            Cancel
+            {t("cancel")}
             
           </button>
           </div>

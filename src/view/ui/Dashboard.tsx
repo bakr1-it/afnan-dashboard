@@ -11,14 +11,16 @@ import Paper from "@mui/material/Paper";
 import { Link } from "react-router-dom";
 import logo from "../../assets/images/logo.svg";
 import { getRowCount, getTeacherStudentCounts } from "../../services/subepaseServicese";
+import { useLanguageContext } from "../../context/LanguageContext";
 
 export default function Dashboard() {
-  const [data, setData] = React.useState([
-    { category: "Students", count: 0 },
-    { category: "Teachers", count: 0 },
-    { category: "Languages", count: 0 },
-    { category: "Academies", count: 0 },
-  ]);
+  const { t } = useLanguageContext();
+  const [counts, setCounts] = React.useState({
+    students: 0,
+    teachers: 0,
+    languages: 0,
+    academies: 0,
+  });
   const [teacherStats, setTeacherStats] = React.useState<{ name: string; studentCount: number }[]>([]);
   const [loading, setLoading] = React.useState(true);
 
@@ -34,12 +36,12 @@ export default function Dashboard() {
             getTeacherStudentCounts(),
           ]);
 
-        setData([
-          { category: "Students", count: studentsCount },
-          { category: "Teachers", count: teachersCount },
-          { category: "Languages", count: languagesCount },
-          { category: "Academies", count: academiesCount },
-        ]);
+        setCounts({
+          students: studentsCount,
+          teachers: teachersCount,
+          languages: languagesCount,
+          academies: academiesCount,
+        });
         setTeacherStats(teachersWithStudents);
       } catch (err) {
         console.error("Error loading dashboard counts:", err);
@@ -50,6 +52,16 @@ export default function Dashboard() {
 
     loadStats();
   }, []);
+
+  const data = React.useMemo(
+    () => [
+      { category: t("studentsCountLabel"), count: counts.students },
+      { category: t("teachersCountLabel"), count: counts.teachers },
+      { category: t("languagesCountLabel"), count: counts.languages },
+      { category: t("academiesCountLabel"), count: counts.academies },
+    ],
+    [counts, t]
+  );
 
   const maxCount = React.useMemo(() => {
     const max = Math.max(...data.map((d) => d.count), 10);
@@ -63,23 +75,23 @@ export default function Dashboard() {
         <div className="w-32 h-32 md:w-44 md:h-44 shrink-0 rounded-2xl overflow-hidden bg-primary/10 flex items-center justify-center p-4 shadow-sm border border-primary/20">
           <img src={logo} alt="Afnan Logo" className="w-full h-full object-contain drop-shadow" />
         </div>
-        <div className="flex-1 text-center md:text-left">
-          <h1 className="text-2xl md:text-3xl font-bold text-gray-800 mb-3">
-            Welcome to Afnan Dashboard!
+        <div className="flex-1 ">
+          <h1 className="text-2xl md:text-3xl font-bold text-gray-800 mb-3 ">
+            {t("welcomeTitle")} 
           </h1>
           <p className="text-gray-600 text-sm md:text-base leading-relaxed mb-6 max-w-2xl">
-            A comprehensive educational platform designed to empower students and teachers. Track real-time progress, oversee academies, manage registered languages, and monitor student metrics effortlessly.
+            {t("welcomeDescription")}
           </p>
           <div className="flex flex-wrap gap-3 justify-center md:justify-start">
             <Link to="/student" className="btn">
-              View Students
+              {t("viewStudents")}
             </Link>
           </div>
         </div>
       </div>
 
       <Typography variant="h5" sx={{ marginBottom: 3, fontWeight: 600 }}>
-        Dashboard Statistics
+        {t("dashboardStatistics")}
       </Typography>
 
       {loading ? (
@@ -91,7 +103,7 @@ export default function Dashboard() {
 
           <Paper elevation={2} sx={{ p: 2, borderRadius: 3 }}>
             <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
-              General Overview
+              {t("generalOverview")}
             </Typography>
             <BarChart
               height={320}
@@ -120,7 +132,12 @@ export default function Dashboard() {
                   width: 110,
                   colorMap: {
                     type: "ordinal",
-                    values: ["Students", "Teachers", "Languages", "Academies"],
+                    values: [
+                      t("studentsCountLabel"),
+                      t("teachersCountLabel"),
+                      t("languagesCountLabel"),
+                      t("academiesCountLabel"),
+                    ],
                     colors: ["#1976d2", "#78909c", "#2e7d32", "#d32f2f"],
                   },
                 },
@@ -135,14 +152,14 @@ export default function Dashboard() {
          
           <Paper elevation={2} sx={{ p: 2, borderRadius: 3 }}>
             <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
-              Students Per Teacher
+              {t("studentsPerTeacher")}
             </Typography>
             <BarChart
               height={320}
               series={[
                 {
                   data: teacherStats.map((t) => t.studentCount),
-                  label: "Students",
+                  label: t("studentsCountLabel"),
                   id: "studentsCountId",
                   color: "#f59e0b",
                 },

@@ -8,9 +8,11 @@ import { vaildatedBeforeSend } from "../../helper";
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { useAcademicLanguage } from "../../context/AcademicLnaguage";
+import { useLanguageContext } from "../../context/LanguageContext";
 
 
 export default function NewAcademic() {
+   const { t } = useLanguageContext();
    /**
     * todo use ref for all input 
     */
@@ -57,7 +59,7 @@ setIsLoading(true);
 
 inserRow({tableName:"academies",payload:payload})
 .then((data)=>{
-      setShowAlert({typeAlert:"success",  message: 'Academic '+''+data.data.name + 'created has been success' , isShow:true});  
+      setShowAlert({typeAlert:"success",  message: t("academic") + ' ' + data.data.name + ' ' + t("createdSuccess") , isShow:true});  
       refEmail.current.value="";
       refName.current.value="";
       refPassword.current.value="";
@@ -78,25 +80,25 @@ const {profile} = useAuth();
   return (
 <>
  <div className="title-ui">
-  <h1>Create New Academic</h1>
+  <h1>{t("createNewAcademic")}</h1>
  </div>
        <form action="" method="post" className="form form-create-new-user" onSubmit={handelOnSubmit}>
                   <div className="form-group">
-                     <Input label="name" ref={refName}/>
+                     <Input label={t("name")} ref={refName}/>
                      <p className="error">{errors.name}</p>
                   </div>
                   <div className="form-group">
-                     <Input label="email" typeInput="email" ref={refEmail}/>
+                     <Input label={t("email")} typeInput="email" ref={refEmail}/>
                      <p className="error">{errors.email}</p>
                   </div>
                   <div className="form-group">
-                     <Input label="password" typeInput="password" ref={refPassword}/>
+                     <Input label={t("password")} typeInput="password" ref={refPassword}/>
                      <p className="error">{errors.password}</p>
                   </div>
                   <div className="button-submit">
 
                  
-                  <button className="btn btn-submite" disabled={isLoading} > {isLoading? <IconLoad />  :"create"}</button>
+                  <button className="btn btn-submite" disabled={isLoading} > {isLoading? <IconLoad />  :t("create")}</button>
                   </div>
 
                  

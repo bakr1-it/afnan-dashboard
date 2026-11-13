@@ -9,24 +9,28 @@ import logo from "../../assets/images/logo.svg";
 import { useAuth } from "../../context/AuthContext";
 import { TbLayoutDashboard } from "react-icons/tb";
 import { FaUserClock } from "react-icons/fa6";
+import { useLanguageContext } from "../../context/LanguageContext";
+import type { LocalsLangKey } from "../constants/locals";
 
 interface SideBarProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-const links = [
-  { to: "/dashboard", id: 1, icon: <TbLayoutDashboard />, text: "Dashboard",role:["super admin","admin","teacher","student"]},
-  { to: "/academic", id: 2, icon: <FaSchool />, text: "Academic" ,role:["super admin"]},
+const links: { to: string; id: number; icon: React.ReactNode; text: LocalsLangKey; role: string[] }[] = [
+  { to: "/dashboard", id: 1, icon: <TbLayoutDashboard />, text: "dashboard",role:["super admin","admin","teacher","student"]},
+  { to: "/academic", id: 2, icon: <FaSchool />, text: "academic" ,role:["super admin"]},
   { to: "/language", id: 3, icon: <FaLanguage />, text: "language" ,role:["super admin","admin"]},
-  { to: "/teachers", id: 4, icon: <GiTeacher />, text: "Teacher" ,role:["super admin","admin"]},
-  { to: "/student", id: 5, icon: <HiUsers />, text: "Student" ,role:["super admin","admin","teacher","student"]},
-  { to: "/pending-student", id: 6, icon: <FaUserClock />, text: "Pending Student" ,role:["super admin","admin"]},
+  { to: "/teachers", id: 4, icon: <GiTeacher />, text: "teacher" ,role:["super admin","admin"]},
+  { to: "/student", id: 5, icon: <HiUsers />, text: "student" ,role:["super admin","admin","teacher","student"]},
+  { to: "/pending-student", id: 6, icon: <FaUserClock />, text: "pendingStudent" ,role:["super admin","admin"]},
 ];
 
 export default function SideBar({ isOpen, onClose }: SideBarProps) {
 
   const {profile} = useAuth();
+  const {t, language} = useLanguageContext();
+  const slideX = language === "en" ? "-100%" : "100%";
   return (
     <AnimatePresence>
       {isOpen && (
@@ -35,14 +39,14 @@ export default function SideBar({ isOpen, onClose }: SideBarProps) {
 
           <motion.aside
             key="sidebar"
-            initial={{ x: "-100%" }}
+            initial={{ x: slideX }}
             animate={{ x: 0 }}
-            exit={{ x: "-100%" }}
+            exit={{ x: slideX }}
             transition={{ duration: 0.5, ease: "easeInOut" }}
           >
             <div className="logo">
               <img src={logo} alt="Afnan Logo" />
-              <h1>Afnan</h1>
+              <h1>{t("appName")}</h1>
             </div>
 
             {links.map((link) => {
@@ -54,7 +58,7 @@ export default function SideBar({ isOpen, onClose }: SideBarProps) {
                 <NavLink to={link.to} key={link.id} onClick={onClose}>
                
                   {link.icon}
-                  <span>{link.text}</span>
+                  <span>{t(link.text)}</span>
           
               </NavLink>
               )

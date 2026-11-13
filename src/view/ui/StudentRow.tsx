@@ -9,6 +9,8 @@ import { MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
 import { listCountryWithIso } from "../constants/country";
 import { converTimeToDate } from "../../helper";
 import { Link } from "react-router-dom";
+import { useLanguageContext } from "../../context/LanguageContext";
+import type { LocalsLangKey } from "../constants/locals";
 export interface UserData {
   id: string;
   name: string;
@@ -28,28 +30,29 @@ export interface UserData {
   reels?: { id: string; title: string } | null;
 }
 function PrintDataUser({ label, value }: { label: string; value: any }) {
+  const { t } = useLanguageContext();
   let displayValue = value;
 if(label == "student_level_progress")return;
 if(label == "country") displayValue = listCountryWithIso[value];
   if (label === "created_at" || label === "birth_date") {
     displayValue = converTimeToDate(value);
   }  else if (label === "is_male") {
-    displayValue = value === true ? "ذكر" : "أنثى" ;
+    displayValue = value === true ? t("male") : t("female") ;
   } else if (label === "is_new_muslim") {
-    displayValue = value === true ? "نعم" : "لا";
+    displayValue = value === true ? t("yes") : t("no");
   }
 
 
 
   return (
     <Grid size={{ xs: 12, sm: 6, md: 4 }} className="user-info-item">
-      <p className="font-semibold text-gray-700">{ label}</p>
+      <p className="font-semibold text-gray-700">{ t(label as LocalsLangKey)}</p>
       <p className="text-gray-600">{displayValue !== null && displayValue !== undefined && displayValue !== "" ? String(displayValue) : "—"}</p>
     </Grid>
   );
 }
 export default function StudentRow({row} :{row:UserData}) {
-
+  const { t } = useLanguageContext();
   
       const [open, setOpen] = React.useState(false);
   const detailsId = React.useId();
@@ -72,7 +75,7 @@ export default function StudentRow({row} :{row:UserData}) {
         <TableCell align="left">{row.email}</TableCell>
         <TableCell align="left">{row.phone_number || "—"}</TableCell>
         <TableCell align="left">{row.teachers?.name || "—"}</TableCell>
-        <TableCell align="left"><Link  className="link" to={`/level/${row.id}`}>Level</Link></TableCell>
+        <TableCell align="left"><Link  className="link" to={`/level/${row.id}`}>{t("level")}</Link></TableCell>
       </TableRow>
       <TableRow id={detailsId} aria-hidden={!open ? true : undefined}>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>

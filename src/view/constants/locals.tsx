@@ -14,6 +14,7 @@ export const locals = {
     // DropDown (Header User Menu)
     accountSettings: "Account settings",
     profile: "Profile",
+    lang: "العربية",
     logout: "Logout",
 
     // Table Columns
@@ -134,6 +135,7 @@ export const locals = {
     // DropDown (Header User Menu)
     accountSettings: "إعدادات الحساب",
     profile: "الملف الشخصي",
+    lang: "English",
     logout: "تسجيل الخروج",
 
     // Table Columns
@@ -149,7 +151,7 @@ export const locals = {
     action: "الإجراء",
 
     // Dashboard Page
-    welcomeTitle: "مرحباً بك في لوحة تحكم أفنان!",
+    welcomeTitle: " منصة أفنان ",
     welcomeDescription:
       "منصة تعليمية شاملة مصممة لتمكين الطلاب والمعلمين. تابع التقدم بشكل فوري، وأشرف على الأكاديميات، وأدر اللغات المسجلة، وراقب إحصائيات الطلاب بكل سهولة.",
     viewStudents: "عرض الطلاب",

@@ -16,12 +16,14 @@ import { useAcademicLanguage } from "../../context/AcademicLnaguage";
 import type { SelectChangeEvent } from "@mui/material/Select";
 import StudentRow ,   { type UserData } from "./StudentRow";
 import Input from "../components/Input";
+import { useLanguageContext } from "../../context/LanguageContext";
 let listStudent : UserData[] | null = null;
 export function clearStudentCache(){
 listStudent=null;
 }
 export default function User() {
   const {teachers} = useAcademicLanguage();
+  const {t} = useLanguageContext();
 
 
   
@@ -69,12 +71,12 @@ setLoading(true);
 
 
   const teacherList  = React.useMemo(()=>{
-    const arr :Record<string,string>={"all":"All"};
+    const arr :Record<string,string>={"all":t("all")};
     teachers.forEach((t)=>{
       arr[t.id]=t.name;
     }) 
     return arr;
-  },[teachers])
+  },[teachers, t])
 
 
    
@@ -91,22 +93,22 @@ const filterrow=  React.useMemo(()=>{
   return (
     <>
       <div className="title-ui">
-        <h1>All Student</h1>
+        <h1>{t("allStudent")}</h1>
       </div>
       <div className="filter-data">
         <div className="list">
         {["admin","super admin"].includes(profile?.role) && 
          <div className="teacher">
-           <p>select student for teacher</p>
+           <p>{t("selectStudentForTeacher")}</p>
           <ListSelect dataObj={teacherList} selectData={selectTeacher} setSelectData={handelOnChangeTeacher} />
          </div>
         }
         {profile?.role !=="student" && 
          <div className="filter-studnet">
-               <p>select student</p>
+               <p>{t("selectStudent")}</p>
                <div className="filter-student-list">
 
-           <ListSelect data={['email','name']} hidNone={true} selectData={selectChoseFilterStudent} setSelectData={handelChangeSelectFilter}/>
+           <ListSelect dataObj={{email: t("email"), name: t("name")}} hidNone={true} selectData={selectChoseFilterStudent} setSelectData={handelChangeSelectFilter}/>
            <Input value={searchInputState} setStateValue={handelOnChangeFilter} />
                </div>
          </div>
@@ -115,7 +117,7 @@ const filterrow=  React.useMemo(()=>{
         {profile?.role !== "student" && 
         <div className="new-student">
           <Link to="/newStudent" className="btn">
-            New Student
+            {t("newStudent")}
           </Link>
         </div>
         }
@@ -125,11 +127,11 @@ const filterrow=  React.useMemo(()=>{
           <TableHead>
             <TableRow>
               <TableCell />
-              <TableCell align="left">Name</TableCell>
-              <TableCell align="left">Email</TableCell>
-              <TableCell align="left">phone</TableCell>
-              <TableCell align="left">Teacher</TableCell>
-              <TableCell align="left">lavel</TableCell>
+              <TableCell align="left">{t("name")}</TableCell>
+              <TableCell align="left">{t("email")}</TableCell>
+              <TableCell align="left">{t("phone")}</TableCell>
+              <TableCell align="left">{t("teacher")}</TableCell>
+              <TableCell align="left">{t("level")}</TableCell>
             </TableRow>
           </TableHead>
           {loading ? (
@@ -151,7 +153,7 @@ const filterrow=  React.useMemo(()=>{
             <TableBody>
                 <TableRow>
                 <TableCell align="center" colSpan={6}>
-                No student 
+                {t("noStudent")}
                 </TableCell>
               </TableRow>
 

@@ -5,9 +5,11 @@ import IconLoad from "../components/IconLoad";
 import AlertSuccess from "../components/AlertSuccess";
 import { vaildatedBeforeSend } from "../../helper";
 import { useAuth } from "../../context/AuthContext";
+import { useLanguageContext } from "../../context/LanguageContext";
 
 
 export default function Login() {
+  const { t } = useLanguageContext();
   
   const refEmail = useRef<HTMLInputElement>(null) as React.RefObject<HTMLInputElement>;
   const refPassword = useRef<HTMLInputElement>(null) as React.RefObject<HTMLInputElement>;
@@ -63,26 +65,26 @@ isShow:boolean,
   return (
     <div className="auth-container">
       <div className="title-ui">
-        <h1>Login</h1>
+        <h1>{t("login")}</h1>
       </div>
 
       <form action="" method="post" className="form-auth" onSubmit={handelOnSubmit}>
         <div className="form-group">
-          <Input label="email" typeInput="email" ref={refEmail} />
+          <Input label={t("email")} typeInput="email" ref={refEmail} />
           <p className="error">{errors.email}</p>
         </div>
 
         <div className="form-group">
-          <Input label="password" typeInput="password" ref={refPassword} />
+          <Input label={t("password")} typeInput="password" ref={refPassword} />
           <p className="error">{errors.password}</p>
         </div>
 
         <div className="button-submit flex justify-between items-center">
           <button className="btn btn-submite" disabled={isLoading}>
-            {isLoading ? <IconLoad /> : "Login"}
+            {isLoading ? <IconLoad /> : t("login")}
           </button>
           <Link to="/signin" className="text-sm text-secondary underline">
-            Sign In
+            {t("signIn")}
           </Link>
         </div>
 

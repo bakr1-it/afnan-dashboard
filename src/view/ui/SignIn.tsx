@@ -146,7 +146,7 @@ export default function SignIn() {
     const newError: Record<string, string> = vaildatedBeforeSend(payload);
 
     if (value === 1 && phone.length <= 7) {
-      newError["phone"] = "Invalid phone number";
+      newError["phone"] = t("invalidPhoneNumber");
     }
 
     setErros(newError);
@@ -165,7 +165,7 @@ export default function SignIn() {
 
       setShowAlert({
         typeAlert: "success",
-        message: "Account created successfully! Redirecting to login...",
+        message: t("accountCreatedRedirect"),
         isShow: true,
       });
 
@@ -175,7 +175,7 @@ export default function SignIn() {
     } catch (err: any) {
       setShowAlert({
         typeAlert: "error",
-        message: err.message || "An unexpected error occurred",
+        message: err.message || t("unexpectedError"),
         isShow: true,
       });
     } finally {
@@ -186,14 +186,14 @@ export default function SignIn() {
   return (
     <div className="auth-container">
       <div className="title-ui">
-        <h1>Sign In</h1>
+        <h1>{t("signIn")}</h1>
       </div>
 
       <div className="tabs my-2">
         <Tabs value={value} onChange={handleChange} aria-label="role tabs">
-          <Tab label="Admin" />
-          <Tab label="Teacher" />
-          <Tab label="Student" />
+          <Tab label={t("admin")} />
+          <Tab label={t("teacher")} />
+          <Tab label={t("student")} />
         </Tabs>
       </div>
 
@@ -205,17 +205,17 @@ export default function SignIn() {
         onSubmit={handelOnSubmit}
       >
         <div className="form-group">
-          <Input label="name" ref={refName} />
+          <Input label={t("name")} ref={refName} />
           <p className="error">{errors.name}</p>
         </div>
 
         <div className="form-group">
-          <Input label="email" typeInput="email" ref={refEmail} />
+          <Input label={t("email")} typeInput="email" ref={refEmail} />
           <p className="error">{errors.email}</p>
         </div>
 
         <div className="form-group">
-          <Input label="password" typeInput="password" ref={refPassword} />
+          <Input label={t("password")} typeInput="password" ref={refPassword} />
           <p className="error">{errors.password}</p>
         </div>
 
@@ -224,7 +224,7 @@ export default function SignIn() {
             <div className="form-group">
               <ListSelect
                 dataObj={TypeAcademic}
-                label="Academic"
+                label={t("academic")}
                 selectData={selectAcademic}
                 setSelectData={handelOnChangeAcademic}
               />
@@ -234,7 +234,7 @@ export default function SignIn() {
             <div className="form-group">
               <ListSelect
                 dataObj={languaguesType}
-                label="languages"
+                label={t("languages")}
                 selectData={selectLang}
                 setSelectData={handelOnChangeLanguage}
               />
@@ -254,7 +254,7 @@ export default function SignIn() {
             <div className="form-group">
               <ListSelect
                 dataObj={listCountryWithIso}
-                label="Country"
+                label={t("country")}
                 selectData={country}
                 setSelectData={handelChangecountry}
               />
@@ -268,7 +268,7 @@ export default function SignIn() {
             <div className="form-group">
               <ListSelect
                 dataObj={listCountryWithIso}
-                label="Country"
+                label={t("country")}
                 selectData={countryStudent}
                 setSelectData={handelChangeCountryStudent}
               />
@@ -279,7 +279,7 @@ export default function SignIn() {
               <AutoCompliate
                 disable={countryStudent === ""}
                 data={listCity}
-                label="City"
+                label={t("city")}
                 selectData={selectCity}
                 setSelectData={handelChangeCity}
               />
@@ -301,16 +301,16 @@ export default function SignIn() {
 
         {value === 2 && (
           <div className="form-group">
-            <Checked ref={refIsNewMuslim} label="Is New Muslim" />
+            <Checked ref={refIsNewMuslim} label={t("isNewMuslim")} />
           </div>
         )}
 
         <div className="button-submit flex justify-between items-center">
           <button className="btn btn-submite" disabled={isLoading}>
-            {isLoading ? <IconLoad /> : "Sign In"}
+            {isLoading ? <IconLoad /> : t("signIn")}
           </button>
           <Link to="/login" className="text-sm text-secondary underline">
-            Login
+            {t("login")}
           </Link>
         </div>
 

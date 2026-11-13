@@ -10,7 +10,9 @@ import { vaildatedBeforeSend } from "../../helper";
 import { useAuth } from '../../context/AuthContext';
 import { Navigate } from 'react-router-dom';
 import { useAcademicLanguage } from '../../context/AcademicLnaguage';
+import { useLanguageContext } from '../../context/LanguageContext';
 export default function NewLanguage() {
+  const { t } = useLanguageContext();
   const refName= useRef<HTMLInputElement>(null) as React.RefObject<HTMLInputElement>;
   const refCode= useRef<HTMLInputElement>(null) as React.RefObject<HTMLInputElement>;
   const refChecked= useRef<HTMLInputElement>(null) as React.RefObject<HTMLInputElement>;
@@ -53,7 +55,7 @@ newError= vaildatedBeforeSend(payload);
   
   inserRow({tableName:"languages",payload:payload})
   .then((data)=>{
-        setShowAlert({typeAlert:"success",  message: ' language  '+''+data.data.name + 'created has been success' , isShow:true});  
+        setShowAlert({typeAlert:"success",  message: t("language") + ' ' + data.data.name + ' ' + t("createdSuccess") , isShow:true});  
 refName.current.value="";
 refCode.current.value="";
 refreshTable("languages");
@@ -71,27 +73,27 @@ refreshTable("languages");
   return (
 <>
  <div className="title-ui">
-  <h1>Create New Lnaguage</h1>
+  <h1>{t("createNewLanguage")}</h1>
  </div>
        <form action="" method="post" className="form form-create-new-user" onSubmit={handelOnSubmit}>
                   <div className="form-group">
-                     <Input ref={refName} label="name"/>
+                     <Input ref={refName} label={t("name")}/>
                      <p className="error">{errors.name}</p>
                   </div>
                   <div className="form-group">
-                     <Input ref={refCode} label="code" typeInput="text"/>
+                     <Input ref={refCode} label={t("code")} typeInput="text"/>
                      <p className="error">{errors.code}</p>
 
                   </div>
                   <div className="form-group">
-                  <Checked label="Active" ref={refChecked}/>
+                  <Checked label={t("active")} ref={refChecked}/>
                   </div>
                            <AlertSuccess type={showAlert.typeAlert} message={showAlert.message} isShow={showAlert.isShow} onClose={()=> setShowAlert((prev)=>({...prev , isShow:false}))}/>
                   
                      <div className="button-submit">
                   
                                    
-                                    <button className="btn btn-submite" disabled={isLoading} > {isLoading? <IconLoad />  :"create"}</button>
+                                    <button className="btn btn-submite" disabled={isLoading} > {isLoading? <IconLoad />  :t("create")}</button>
                                     </div>
                   </form>
 

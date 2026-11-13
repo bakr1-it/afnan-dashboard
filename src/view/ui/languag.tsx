@@ -9,6 +9,7 @@ import Paper from '@mui/material/Paper';
 import { Link, Navigate } from 'react-router-dom';
 import { useAcademicLanguage } from '../../context/AcademicLnaguage';
 import { useAuth } from '../../context/AuthContext';
+import { useLanguageContext } from '../../context/LanguageContext';
 
 
 
@@ -16,24 +17,25 @@ export default function Lnaguage() {
 const {languagues } =  useAcademicLanguage();
 
   const {profile} = useAuth();
+  const {t} = useLanguageContext();
   if(!["admin","super admin"].includes(profile?.role))  return  <Navigate to="/dashboard" replace/>;
 
   return (
  <>
  <div className="container-header-academies container-components">
  <div className="title-ui">
-  <h1>Lnaguage</h1>
+  <h1>{t("language")}</h1>
 
  </div>
-    <Link to="/newLnaguage" className="btn">New Lnaguage </Link> 
+    <Link to="/newLnaguage" className="btn">{t("newLanguage")}</Link> 
 </div>
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell align="left">Name</TableCell>
-            <TableCell align="left">code</TableCell>
-            <TableCell align="left">is Active</TableCell>
+            <TableCell align="left">{t("name")}</TableCell>
+            <TableCell align="left">{t("code")}</TableCell>
+            <TableCell align="left">{t("isActive")}</TableCell>
           </TableRow>
         </TableHead>
  

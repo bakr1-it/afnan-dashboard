@@ -13,7 +13,9 @@ import { vaildatedBeforeSend } from "../../helper";
 import { useAuth } from "../../context/AuthContext";
 import { Navigate } from "react-router-dom";
 import type { SelectChangeEvent } from "@mui/material/Select";
+import { useLanguageContext } from "../../context/LanguageContext";
 export default function NewTeacher() {
+  const { t } = useLanguageContext();
   /**
    * todo context for academic and language
    */
@@ -117,7 +119,7 @@ newError = vaildatedBeforeSend(payload);
   
 
 if(payload.phone.length <=7){
-  newError["phone"]="Invalid phone number";
+  newError["phone"]=t("invalidPhoneNumber");
 }
   setErros(newError);
   
@@ -130,7 +132,7 @@ if(payload.phone.length <=7){
   
   inserRow({tableName:"teachers",payload:payload})
   .then((data)=>{
-        setShowAlert({typeAlert:"success",  message: ' teacher '+' ' +data.data.name + 'created has been success' , isShow:true});  
+        setShowAlert({typeAlert:"success",  message: t("teacher") + ' ' + data.data.name + ' ' + t("createdSuccess") , isShow:true});  
 refName.current.value="";
 refEmail.current.value="";
 refPassword.current.value="";
@@ -160,19 +162,19 @@ refreshTable("teachers");
   return (
      <>
      <div className="title-ui">
-  <h1>Create New Teacher</h1>
+  <h1>{t("createNewTeacher")}</h1>
  </div>
   <form action="" method="post" className="form form-create-new-user" onSubmit={handelOnSubmit}>
             <div className="form-group">
-               <Input ref={refName} label="name"/>
+               <Input ref={refName} label={t("name")}/>
                  <p className="error">{errors.name}</p>
             </div>
             <div className="form-group">
-               <Input ref={refEmail} label="email" typeInput="email"/>
+               <Input ref={refEmail} label={t("email")} typeInput="email"/>
                  <p className="error">{errors.email}</p>
             </div>
             <div className="form-group">
-               <Input ref={refPassword} label="password" typeInput="password" />
+               <Input ref={refPassword} label={t("password")} typeInput="password" />
                  <p className="error">{errors.password}</p>
             </div>
             <div className="form-group">
@@ -186,22 +188,22 @@ refreshTable("teachers");
                     <p className="error">{errors.phone}</p>
             </div>
             <div className="form-group">
-              <ListSelect dataObj={listCountryWithIso} label="Country" selectData={country} setSelectData={handelChangecountry}/>
+              <ListSelect dataObj={listCountryWithIso} label={t("country")} selectData={country} setSelectData={handelChangecountry}/>
                 <p className="error">{errors.country}</p>
             </div>
             <div className="form-group">
-              <ListSelect dataObj={languaguesType} label="languages" selectData={selectLang} setSelectData={handelOnChangeLanguage}/>
+              <ListSelect dataObj={languaguesType} label={t("languages")} selectData={selectLang} setSelectData={handelOnChangeLanguage}/>
                 <p className="error">{errors.language_code}</p>
             </div>
             <div className="form-group">
-              <ListSelect dataObj={TypeAcademic} label="Academic" selectData={selectAcademic} setSelectData={handelOnChangeAcademic} />
+              <ListSelect dataObj={TypeAcademic} label={t("academic")} selectData={selectAcademic} setSelectData={handelOnChangeAcademic} />
                 <p className="error">{errors.academy_id}</p>
             </div>
             <div className="form-group">
                  <MailFmail refChecked={refChecked}/>
             </div>
                    <div className="button-submit">
-  <button className="btn btn-submite" disabled={isLoading} > {isLoading? <IconLoad />  :"create"}</button>
+  <button className="btn btn-submite" disabled={isLoading} > {isLoading? <IconLoad />  :t("create")}</button>
   </div>
             
         <AlertSuccess type={showAlert.typeAlert} message={showAlert.message} isShow={showAlert.isShow} onClose={()=> setShowAlert((prev)=>({...prev , isShow:false}))}/>
